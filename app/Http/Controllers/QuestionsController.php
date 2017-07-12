@@ -43,7 +43,6 @@ class QuestionsController extends Controller
         $question->title = $request->title;
         $question->description = $request->description;
         $question->state = 'propuesta';
-        $question->votes = 0;
         $question->user_id = $current_user->id;
         $question->save();
         //first option

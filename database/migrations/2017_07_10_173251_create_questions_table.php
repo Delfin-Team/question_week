@@ -18,7 +18,7 @@ class CreateQuestionsTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('state');
-            $table->integer('votes');
+            $table->integer('votes')->default(0);
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

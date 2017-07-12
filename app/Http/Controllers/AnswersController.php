@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 use App\Question;
 use Illuminate\Http\Request;
-
+use App\Answer;
+use Auth;
 class AnswersController extends Controller
 {
     /**
@@ -56,6 +57,19 @@ class AnswersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function addVote(Request $request, $id)
+    {
+      $question = Question::find($id);
+
+      $current_user = Auth::user();
+      //add register on intermediate table
+      $question->users()->attach($current_user);
+
+      $answer = Answer::find($request->answer);
+      $answer->votes += 1;
+      $answer->save();
+      return redirect()->route('questions.index');
+    }
     public function edit($id)
     {
         //

@@ -25,12 +25,22 @@
                         <h3 class="panel-title">{{$question->title}} - </h3>
                     </div>
                     <div class="panel-body">
+                        <p>
+
+                        </p>
                         <p><strong>Creador:</strong> {{$question->user->email}}</p>
                         <p>Fecha de creación: {{$question->created_at}}</p>
                         <p>Votos hasta ahora: {{$question->votes}}</p>
+
                         {!!Form::model($question,['route'=>['addVote', $question->id],'method'=>'PUT'])!!}
                         <input type="submit" class="btn btn-success" value="votar">
                         {!!Form::close()!!}
+
+                        <hr>
+                        @if(!$question->AlreadyAnswered)
+                            <a href="{{route('questions.show',$question)}}" class="btn btn-info">Contestar ahora</a>
+                        @endif
+
                     </div>
                 </div>
             </div>

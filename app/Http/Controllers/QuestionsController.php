@@ -57,7 +57,7 @@ class QuestionsController extends Controller
         $answer2->save();
         //third option
         $answer3 = new Answer();
-        $answer3->description = $request->answer1;
+        $answer3->description = $request->answer3;
         $answer3->question_id = $question->id;
         $answer3->save();
 
@@ -65,7 +65,7 @@ class QuestionsController extends Controller
     }
     public function addVote(Request $request, $id){
         $question = Question::find($id);
-        $question->votes +=1;
+        $question->votes += 1;
         $question->save();
         return redirect()->route('questions.index');
     }

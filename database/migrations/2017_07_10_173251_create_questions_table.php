@@ -32,7 +32,14 @@ class CreateQuestionsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
-
+        Schema::create('user_has_vote'.function(Blueprint $tables){
+          $table->increments('id');
+          $table->integer('question_id')->unsigned();
+          $table->foreign('question_id')->references('id')->on('questions');
+          $table->integer('user_id')->unsigned();
+          $table->foreign('user_id')->references('id')->on('users');
+          $table->timestamps();
+        });
     }
 
     /**
@@ -44,5 +51,7 @@ class CreateQuestionsTable extends Migration
     {
         Schema::dropIfExists('questions');
         Schema::dropIfExists('question_user');
+        Schema::dropIfExists('user_has_vote');
+
     }
 }

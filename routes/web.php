@@ -22,6 +22,10 @@ Route::put('/addVote/{id}',[
     'uses'=> 'QuestionsController@addVote',
     'as' => 'addVote',
 ]);
+Route::post('/addVote/{id}',[
+    'uses'=> 'AnswersController@addVote',
+    'as' => 'answer.addVote',
+]);
 Route::resource('questions','QuestionsController');
 
 Route::resource('answers','AnswersController');

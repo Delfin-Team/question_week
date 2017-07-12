@@ -1,7 +1,8 @@
 <?php
 
 namespace App;
-
+use Auth;
+use App\QuestionsUsers;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
@@ -18,5 +19,27 @@ class Question extends Model
     }
     public function answers(){
         return $this->hasMany('App\Answer');
+    }
+    public function users()
+    {
+      return $this->belongsToMany('App\User','question_user');
+    }
+    public function getAlreadyAnsweredAttribute()
+    {
+
+
+
+      $already = QuestionsUsers::where(
+        [
+          ['user_id','=',1],
+          ['question_id','=',$this->id],
+        ]
+      )->count();
+      if ($already > 0){
+        return true;
+      }else{
+        return false;
+      }
+      return $already;
     }
 }

@@ -10,7 +10,8 @@
                     <h3 class="panel-title text-center">Elige una respuesta</h3>
                 </div>
                 <div class="panel-body text-center">
-                    <form action="{{route('addVote',$question->id)}}" method="POST">
+
+                    <form action="{{route('answer.addVote',$question->id)}}" method="POST">
                         {{csrf_field()}}
                         @foreach($answers as $answer)
                             <div class="radio">

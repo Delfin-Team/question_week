@@ -26,6 +26,21 @@ Route::post('/addVote/{id}',[
     'uses'=> 'AnswersController@addVote',
     'as' => 'answer.addVote',
 ]);
+Route::post('/registerVote/{id}',[
+    'uses'=> 'QuestionsController@registerVote',
+    'as' => 'registerVote',
+]);
+Route::get('/questions/graphics',[
+  'uses' => 'QuestionsController@graphics',
+  'as' => 'showGraphs'
+]);
+
+Route::get('/votesQuestions',[
+  'uses' => 'QuestionsController@totalVotes',
+  'as' => 'votesQuestions',
+]);
+
+
 Route::resource('questions','QuestionsController');
 
 Route::resource('answers','AnswersController');

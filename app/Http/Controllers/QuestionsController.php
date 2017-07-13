@@ -63,13 +63,30 @@ class QuestionsController extends Controller
 
         return redirect()->route('questions.index');
     }
+    //find question, add vote to question and disable question to user()
     public function addVote(Request $request, $id){
+
         $question = Question::find($id);
+        $current_user = Auth::user();
         $question->votes += 1;
+        $question->votesUser()->attach($current_user);
         $question->save();
         return redirect()->route('questions.index');
     }
+    public function registerVote(Rquest $request, $id)
+    {
 
+
+    }
+    public function totalVotes()
+    {
+      $questions = Question::all();
+      return response()->json(['questions'=>$questions]);
+    }
+    public function graphics()
+    {
+      return view('question.graphics');
+    }
     /**
      * Display the specified resource.
      *
@@ -91,7 +108,8 @@ class QuestionsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $question = Question::findOrFail($id);
+        return view('question.show',['question'=>$question]);
     }
 
     /**
@@ -114,6 +132,9 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $question = Question::findOrFail($id);
+        $question->delete();
+
+        return redirect()->route('questions.index');
     }
 }

@@ -3,6 +3,7 @@
 namespace App;
 use Auth;
 use App\QuestionsUsers;
+use App\UserHasvote;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
@@ -26,13 +27,14 @@ class Question extends Model
     }
     public function votesUser()
     {
-      return $this->belongsToMany('App\Usr','user_has_vote');
+      return $this->belongsToMany('App\User','user_has_vote');
     }
     public function getAlreadyVoteAttribute()
     {
-      $already = UserHasVote::where(
+      $current_user = Auth::user()->id;
+      $already = UserHasvote::where(
         [
-          ['user_id','=',1],
+          ['user_id','=',$current_user],
           ['question_id','=',$this->id],
         ]
       )->count();
@@ -45,9 +47,10 @@ class Question extends Model
     }
     public function getAlreadyAnsweredAttribute()
     {
+      $current_user = Auth::user()->id;
       $already = QuestionsUsers::where(
         [
-          ['user_id','=',1],
+          ['user_id','=',$current_user],
           ['question_id','=',$this->id],
         ]
       )->count();

@@ -31,10 +31,12 @@
                         <p><strong>Creador:</strong> {{$question->user->email}}</p>
                         <p>Fecha de creación: {{$question->created_at}}</p>
                         <p>Votos hasta ahora: {{$question->votes}}</p>
+                        @if (!$question->AlreadyVote)
+                          {!!Form::model($question,['route'=>['addVote', $question->id],'method'=>'PUT'])!!}
+                          <input type="submit" class="btn btn-success" value="votar">
+                          {!!Form::close()!!}
+                        @endif
 
-                        {!!Form::model($question,['route'=>['addVote', $question->id],'method'=>'PUT'])!!}
-                        <input type="submit" class="btn btn-success" value="votar">
-                        {!!Form::close()!!}
 
                         <hr>
                         @if(!$question->AlreadyAnswered)

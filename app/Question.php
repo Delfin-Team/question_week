@@ -24,11 +24,27 @@ class Question extends Model
     {
       return $this->belongsToMany('App\User','question_user');
     }
+    public function votesUser()
+    {
+      return $this->belongsToMany('App\Usr','user_has_vote');
+    }
+    public function getAlreadyVoteAttribute()
+    {
+      $already = UserHasVote::where(
+        [
+          ['user_id','=',1],
+          ['question_id','=',$this->id],
+        ]
+      )->count();
+      if ($already > 0){
+        return true;
+      }else{
+        return false;
+      }
+      return $already;
+    }
     public function getAlreadyAnsweredAttribute()
     {
-
-
-
       $already = QuestionsUsers::where(
         [
           ['user_id','=',1],

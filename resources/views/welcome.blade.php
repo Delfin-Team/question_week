@@ -64,7 +64,7 @@
             }
         </style>
     </head>
-    <body>
+    <body style="">
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
@@ -79,16 +79,13 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    DELFIN HASTA EL FIN
                 </div>
+                <img
+                src="http://www.dmax.marca.com/wp-content/uploads/2015/10/delfin.jpg"
+                alt="delfin" class="img-rounded" style="border-radius:50%">
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+
             </div>
         </div>
     </body>

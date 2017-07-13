@@ -71,17 +71,23 @@ class QuestionsController extends Controller
         $question->votes += 1;
         $question->votesUser()->attach($current_user);
         $question->save();
-        return redirect()->route('questions.index');
+        return redirect()->route('showGraphs');
     }
     public function registerVote(Rquest $request, $id)
     {
 
 
     }
-    public function totalVotes()
+    public function totalVotes($id)
     {
-      $questions = Question::all();
-      return response()->json(['questions'=>$questions]);
+      $question = Question::find($id);
+      $answers = $question->answers;
+      return response()->json(['answers'=>$answers]);
+    }
+    public function showvotes($id)
+    {
+      $question = Question::find($id);
+      return view('question.votes',['question'=>$question]);
     }
     public function graphics()
     {

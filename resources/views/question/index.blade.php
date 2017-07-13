@@ -2,11 +2,8 @@
 
 @section('content')
     <div class="row">
-
         <div class="row" style="margin-bottom: 10px;">
             <div class="col-xs-12 col-lg-6" style="margin-top: 15px;">
-
-
                 <h2>Preguntas propuestas:</h2>
             </div>
             <div class="col-xs-12 col-lg-6">
@@ -17,36 +14,34 @@
                 </a>
             </div>
         </div>
-            <!--questions-->
-        @foreach($questions as $question)
-            <div class="col-xs-12 col-md-6 col-lg-4">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{$question->title}} - </h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>
+    </div>
+    <div class="row">
+          <!--questions-->
+      @foreach($questions as $question)
+          <div class="col-xs-12">
+              <div class="panel panel-primary">
+                  <div class="panel-heading">
+                      <h3 class="panel-title">{{$question->title}} - </h3>
+                  </div>
+                  <div class="panel-body">
+                      <p><strong>Creador:</strong> {{$question->user->email}}</p>
+                      <p>Fecha de creación: {{$question->created_at}}</p>
+                      <p>Votos hasta ahora: {{$question->votes}}</p>
+                      @if (!$question->AlreadyVote)
+                        {!!Form::model($question,['route'=>['addVote', $question->id],'method'=>'PUT'])!!}
+                        <input type="submit" class="btn btn-success" value="votar">
+                        {!!Form::close()!!}
+                      @endif
 
-                        </p>
-                        <p><strong>Creador:</strong> {{$question->user->email}}</p>
-                        <p>Fecha de creación: {{$question->created_at}}</p>
-                        <p>Votos hasta ahora: {{$question->votes}}</p>
-                        @if (!$question->AlreadyVote)
-                          {!!Form::model($question,['route'=>['addVote', $question->id],'method'=>'PUT'])!!}
-                          <input type="submit" class="btn btn-success" value="votar">
-                          {!!Form::close()!!}
-                        @endif
 
-
-                        <hr>
-                        @if(!$question->AlreadyAnswered)
-                            <a href="{{route('questions.show',$question)}}" class="btn btn-info">Contestar ahora</a>
-                        @endif
-
-                    </div>
-                </div>
-            </div>
-        @endforeach
-
+                      <hr>
+                      @if(!$question->AlreadyAnswered)
+                          <a href="{{route('questions.show',$question)}}" class="btn btn-info">Contestar ahora</a>
+                      @endif
+                      <a href="{{route('showGraphsVotes',$question->id)}}" class="btn btn-warning">Ver votos hasta ahora</a>
+                  </div>
+              </div>
+          </div>
+      @endforeach
     </div>
     @endsection

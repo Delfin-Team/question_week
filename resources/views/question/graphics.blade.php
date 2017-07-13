@@ -22,7 +22,7 @@
     success : function(data) {
 
       console.log(data);
-      var mylabes = [];
+      var mylabels = [];
       var totalVotes = [];
       var colors = [
         '#f44336',//0
@@ -37,7 +37,7 @@
       var graphsColors = [];
       $.each(data.questions,function(i, item){
         console.log(data.questions[i].title);
-        mylabes.push(data.questions[i].title);
+        mylabels.push(data.questions[i].title);
         totalVotes.push(data.questions[i].votes);
         var newNumber = getRandomInt();
         console.log(newNumber);
@@ -51,17 +51,18 @@
         */
       });
       //draw graphic :)
+      console.log(mylabels);
       var ctx = document.getElementById("myChart").getContext('2d');
       var myOwnChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: mylabes,
+            labels: mylabels,
             datasets: [{
                 label: '# Votos',
                 data: totalVotes,
                 backgroundColor: graphsColors,
-                borderColor: graphsColors,
-                borderWidth: 1
+                borderColor: graphsColors.reverse(),
+                borderWidth: 2
             }]
         },
         options: {

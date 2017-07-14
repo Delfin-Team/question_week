@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" style="background: ;">
     <div class="container-fluid">
 
         <div class="navbar-header">
@@ -16,6 +16,12 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Preguntas Ganadoras <span class="sr-only">(current)</span></a></li>
                 <li><a href="{{route('showGraphs')}}">Votos</a></li>
+                <li>
+                  <a href="{{route('questions.create')}}">
+                    <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                    Proponer
+                  </a>
+                </li>
 
             </ul>
 

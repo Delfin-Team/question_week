@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Question;
 use App\Answer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,8 +16,37 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        $questions = Question::where('state','propuesta')->orderBy('votes','DESC')->get();
-        return view('question.index',['questions'=>$questions]);
+        $current_date = Carbon::now();
+        $sundayOfLastWeek = Carbon::now()->previous(Carbon::SUNDAY)->format('Y-m-d H:i:s');
+
+        if ($current_date->dayOfWeek == 1) {
+            $mondayOfLastWeek = Carbon::now()->previous(Carbon::MONDAY)->format('Y-m-d H:i:s');
+
+        }else{
+          $mondayOfLastWeek = Carbon::now()->previous(Carbon::MONDAY)->previous(Carbon::MONDAY)->format('Y-m-d H:i:s');
+        }
+
+        $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d H:i:s');
+        $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d H:i:s');
+
+        $theWinner = Question::where([
+
+                                      ['created_at','>=',$startOfWeek],
+                                      ['created_at','<=',$endOfWeek]
+                                    ])
+                              ->orderBy('votes','DESC')->first();
+        if ($theWinner->state == "propuesta") {
+          $theWinner->state = "ganadora";
+          $theWinner->save();
+        }
+
+        $questions = Question::where([
+
+                                      ['created_at','>=',$startOfWeek],
+                                      ['created_at','<=',$endOfWeek]
+                                    ])
+                              ->orderBy('votes','DESC')->get();
+        return view('question.index',['questions' => $questions, 'theWinner' => $theWinner]);
     }
 
     /**

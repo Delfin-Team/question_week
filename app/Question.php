@@ -4,6 +4,7 @@ namespace App;
 use Auth;
 use App\QuestionsUsers;
 use App\UserHasvote;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model

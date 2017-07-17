@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         //extra packages
         Collective\Html\HtmlServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
 
     ],
 

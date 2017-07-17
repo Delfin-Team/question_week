@@ -18,4 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::put('addVote/{id}','Api\QuestionsController@addVote');
+Route::get('/questionweek','Api\QuestionsController@questionWeek');
 Route::resource('questions','Api\QuestionsController');
+Route::resource('answers','Api\AnswersController');

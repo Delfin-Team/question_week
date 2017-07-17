@@ -1,46 +1,20 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-use App\Question;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
-class QuestionsController extends Controller
+use App\Answer;
+class AnswersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function questionWeek()
-    {
-      $current_date = Carbon::now();
-      $sundayOfLastWeek = Carbon::now()->previous(Carbon::SUNDAY)->format('Y-m-d H:i:s');
-
-      if ($current_date->dayOfWeek == 1) {
-          $mondayOfLastWeek = Carbon::now()->previous(Carbon::MONDAY)->format('Y-m-d H:i:s');
-
-      }else{
-        $mondayOfLastWeek = Carbon::now()->previous(Carbon::MONDAY)->previous(Carbon::MONDAY)->format('Y-m-d H:i:s');
-      }
-      $question = Question::where([
-                                    ['created_at','>=',$mondayOfLastWeek],
-                                    ['created_at','<=',$sundayOfLastWeek]
-                                  ])
-                            ->orderBy('votes','DESC')->first();
-      return response()->json($question);
-    }
-    public function addVote($id){
-        $question = Question::find($id);
-        $question->votes +=1;
-        $question->save();
-        return response()->json(['response'=>'ok'],200);
-    }
     public function index()
     {
-        $questions = Question::all();
 
-        return response()->json($questions);
     }
 
     /**
@@ -72,9 +46,13 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        $question = Question::find($id);
-        $answers = $question->answers;
-        return response()->json($question);
+        try {
+          $answer = Answer::find($id);
+        } catch (Exception $e) {
+          return response()->json(['message'=>'not found'],400);
+        }
+        return response()->json(['answer'=>$answer],200);
+
     }
 
     /**

@@ -31,8 +31,8 @@ class QuestionsController extends Controller
 
         $theWinner = Question::where([
 
-                                      ['created_at','>=',$startOfWeek],
-                                      ['created_at','<=',$endOfWeek]
+                                      ['created_at','>=',$mondayOfLastWeek],
+                                      ['created_at','<=',$sundayOfLastWeek]
                                     ])
                               ->orderBy('votes','DESC')->first();
         if ($theWinner->state == "propuesta") {

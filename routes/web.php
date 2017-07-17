@@ -18,34 +18,35 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::put('/addVote/{id}',[
-    'uses'=> 'QuestionsController@addVote',
-    'as' => 'addVote',
-]);
-Route::post('/addVote/{id}',[
-    'uses'=> 'AnswersController@addVote',
-    'as' => 'answer.addVote',
-]);
-
-Route::get('/questions/graphics',[
-  'uses' => 'QuestionsController@graphics',
-  'as' => 'showGraphs'
-]);
-Route::get('/votesQuestions',[
-  'uses' => 'QuestionsController@totalVotes',
-  'as' => 'votesQuestions',
-]);
-
-Route::get('/votesanswers/{id}',[
-  'uses' => 'QuestionsController@totalVotes',
-  'as' => 'votesQuestions',
-]);
-Route::get('/graphicsquestion/{id}',[
-  'uses' => 'QuestionsController@showvotes',
-  'as' => 'showGraphsVotes',
-]);
 
 
-Route::resource('questions','QuestionsController');
+Route::middleware(['auth'])->group(function(){
+  Route::put('/addVote/{id}',[
+      'uses'=> 'QuestionsController@addVote',
+      'as' => 'addVote',
+  ]);
+  Route::post('/addVote/{id}',[
+      'uses'=> 'AnswersController@addVote',
+      'as' => 'answer.addVote',
+  ]);
 
-Route::resource('answers','AnswersController');
+  Route::get('/questions/graphics',[
+    'uses' => 'QuestionsController@graphics',
+    'as' => 'showGraphs'
+  ]);
+  Route::get('/votesQuestions',[
+    'uses' => 'QuestionsController@totalVotes',
+    'as' => 'votesQuestions',
+  ]);
+
+  Route::get('/votesanswers/{id}',[
+    'uses' => 'QuestionsController@totalVotes',
+    'as' => 'votesQuestions',
+  ]);
+  Route::get('/graphicsquestion/{id}',[
+    'uses' => 'QuestionsController@showvotes',
+    'as' => 'showGraphsVotes',
+  ]);
+  Route::resource('questions','QuestionsController');
+  Route::resource('answers','AnswersController');
+});

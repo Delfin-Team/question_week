@@ -15,11 +15,18 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Preguntas Ganadoras <span class="sr-only">(current)</span></a></li>
-                <li><a href="{{route('showGraphs')}}">Votos</a></li>
+                <li>
+                  <a href="{{route('showGraphs')}}">Votos</a></li>
                 <li>
                   <a href="{{route('questions.create')}}">
                     <i class="fa fa-commenting-o" aria-hidden="true"></i>
                     Proponer
+                  </a>
+                </li>
+                <li>
+                  <a href="{{--route('questions.create')--}}">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    Grupos
                   </a>
                 </li>
 

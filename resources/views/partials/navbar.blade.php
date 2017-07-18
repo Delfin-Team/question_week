@@ -27,7 +27,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="{{--route('questions.create')--}}">
+                  <a href="{{route('groups.index')}}">
                     <i class="fa fa-users" aria-hidden="true"></i>
                     Grupos
                   </a>

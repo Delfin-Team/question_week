@@ -15,7 +15,7 @@ class GroupsController extends Controller
     public function index()
     {
         $current_user = Auth::user();
-        $userGroups = $current_user->groups();
+        $userGroups = $current_user->groups;
         return view('group.index',['userGroups' => $userGroups]);
     }
 

@@ -37,4 +37,8 @@ class User extends Authenticatable
     {
       return $this->belongsToMany('App\Question','user_has_vote');
     }
+    public function groups()
+    {
+      return $this->belongsToMany('App\Group');
+    }
 }

@@ -16,6 +16,7 @@ class GroupsController extends Controller
     {
         $current_user = Auth::user();
         $userGroups = $current_user->groups;
+        dd($userGroups);
         return view('group.index',['userGroups' => $userGroups]);
     }
 
@@ -65,7 +66,7 @@ class GroupsController extends Controller
     public function edit($id)
     {
         $group = Group::find($id);
-        return view('question.update',['group'] => $group);
+        return view('question.update',['group' => $group]);
     }
 
     /**

@@ -16,7 +16,10 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Preguntas Ganadoras <span class="sr-only">(current)</span></a></li>
                 <li>
-                  <a href="{{route('showGraphs')}}">Votos</a></li>
+                  <a href="{{route('showGraphs')}}">
+                    <i class="fa fa-line-chart"></i>
+                    Votos</a>
+                  </li>
                 <li>
                   <a href="{{route('questions.create')}}">
                     <i class="fa fa-commenting-o" aria-hidden="true"></i>

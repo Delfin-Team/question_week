@@ -49,4 +49,5 @@ Route::middleware(['auth'])->group(function(){
   ]);
   Route::resource('questions','QuestionsController');
   Route::resource('answers','AnswersController');
+  Route::resource('groups','GroupsController');
 });

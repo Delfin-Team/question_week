@@ -30,9 +30,10 @@ class QuestionsController extends Controller
                                     ['created_at','<=',$sundayOfLastWeek]
                                   ])
                             ->orderBy('votes','DESC')->first();
-      $owner = User::find($question->user_id);
-      $question->created_at->diffForHumans();
-      return response()->json(['question' => $question, 'owner' => $owner, 200]);
+      //$owner = User::find($question->user_id);
+      $question->user;
+      $question->answers;
+      return response()->json(['question' => $question, 200]);
     }
     public function addVote($id){
         $question = Question::find($id);
@@ -43,7 +44,6 @@ class QuestionsController extends Controller
     public function index()
     {
         $questions = Question::all();
-
         return response()->json($questions);
     }
 
@@ -77,8 +77,9 @@ class QuestionsController extends Controller
     public function show($id)
     {
         $question = Question::find($id);
-        $answers = $question->answers;
-        $ownder = $question->user;
+        $question->user;
+        $question->answers;
+
         return response()->json($question);
     }
 

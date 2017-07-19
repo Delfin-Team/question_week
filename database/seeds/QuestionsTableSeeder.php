@@ -17,7 +17,17 @@ class QuestionsTableSeeder extends Seeder
             'description' => "Pregunta de la semana",
             'state' => "propuesta",
             'user_id' => 1,
+            'group_id' => 1,
             'created_at' => $todayIs,
+        ]);
+        $todayIs2 = Carbon::now()->previous(Carbon::MONDAY)->previous(Carbon::MONDAY)->format('Y-m-d H:i:s');
+        DB::table('questions')->insert([
+            'title' => "¿Qué tal tu día de ayer?",
+            'description' => "Pregunta de la semana",
+            'state' => "propuesta",
+            'user_id' => 1,
+            'group_id' => 1,
+            'created_at' => $todayIs2,
         ]);
 
     }

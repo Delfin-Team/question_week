@@ -14,7 +14,7 @@ class Question extends Model
       'created_at',
     ];
     protected $fillable = [
-        'title','description','state','user_id','votes', 'created'
+        'title','description','state','user_id','group_id','votes', 'created_at'
     ];
     public function user(){
         return $this->belongsTo('App\User');

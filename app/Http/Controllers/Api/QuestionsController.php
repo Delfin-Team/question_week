@@ -5,6 +5,8 @@ use App\Question;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+
+use App\User;
 class QuestionsController extends Controller
 {
     /**
@@ -28,7 +30,8 @@ class QuestionsController extends Controller
                                     ['created_at','<=',$sundayOfLastWeek]
                                   ])
                             ->orderBy('votes','DESC')->first();
-      return response()->json($question);
+      $owner = User::find($question->user_id);
+      return response()->json(['question' => $question, 'owner' => $owner, 200]);
     }
     public function addVote($id){
         $question = Question::find($id);

@@ -31,6 +31,7 @@ class QuestionsController extends Controller
                                   ])
                             ->orderBy('votes','DESC')->first();
       $owner = User::find($question->user_id);
+      $question->created_at->diffForHumans();
       return response()->json(['question' => $question, 'owner' => $owner, 200]);
     }
     public function addVote($id){
@@ -77,6 +78,7 @@ class QuestionsController extends Controller
     {
         $question = Question::find($id);
         $answers = $question->answers;
+        $ownder = $question->user;
         return response()->json($question);
     }
 

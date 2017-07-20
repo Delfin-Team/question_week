@@ -31,6 +31,10 @@ class QuestionsController extends Controller
                                   ])
                             ->orderBy('votes','DESC')->first();
       //$owner = User::find($question->user_id);
+      if ($question->state == "propuesta") {
+        $question->state = "ganadora";
+        $question->save();
+      }
       $question->user;
       $question->answers;
       return response()->json(['question' => $question, 200]);
@@ -43,7 +47,9 @@ class QuestionsController extends Controller
     }
     public function index()
     {
-        $questions = Question::all();
+        $questions = Question::where([
+          ['state','=','propuesta']
+        ])->get();
         return response()->json($questions);
     }
 

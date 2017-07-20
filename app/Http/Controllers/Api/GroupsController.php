@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Group;
+use App\User;
 class GroupsController extends Controller
 {
     /**
@@ -48,7 +49,10 @@ class GroupsController extends Controller
     public function show($id)
     {
         $group = Group::find($id);
-        return response()->json($group);
+        $group->users;
+        $group->questions;
+        $owner = User::find($group->user_id);
+        return response()->json(['group' => $group,'owner' => $owner]);
     }
 
     /**

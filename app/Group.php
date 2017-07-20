@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use CArbon\Carbon;
+use Carbon\Carbon;
 class Group extends Model
 {
     protected $table = 'groups';
@@ -16,6 +16,14 @@ class Group extends Model
     public function users()
     {
       return $this->belongsToMany('App\User');
+    }
+    public function creator()
+    {
+      return $this->belongsTo('App\User');
+    }
+    public function questions()
+    {
+      return $this->hasMany('App\Question');
     }
 
 }

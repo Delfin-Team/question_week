@@ -33,6 +33,13 @@ class AnswersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function addVote($id)
+    {
+      $answer = Answer::find($id);
+      $answer->votes +=1;
+      $answer->save();
+      return response()->json(['message' =>'ok'],200);
+    }
     public function store(Request $request)
     {
         //
@@ -46,11 +53,7 @@ class AnswersController extends Controller
      */
     public function show($id)
     {
-        try {
-          $answer = Answer::find($id);
-        } catch (Exception $e) {
-          return response()->json(['message'=>'not found'],400);
-        }
+        $answer = Answer::find($id);
         return response()->json(['answer'=>$answer],200);
 
     }

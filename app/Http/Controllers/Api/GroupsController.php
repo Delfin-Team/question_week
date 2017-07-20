@@ -37,7 +37,11 @@ class GroupsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $group = new Group();
+        $group->name = $request->input('name');
+        $group->user_id = 1;
+        $group->save();
+        return response()->json(['group' => $group], 200);
     }
 
     /**

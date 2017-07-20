@@ -5,7 +5,7 @@ use App\Question;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-
+use App\Answer;
 use App\User;
 class QuestionsController extends Controller
 {
@@ -71,7 +71,27 @@ class QuestionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $question = new Question();
+      $question->title = $request->input('title');
+      $question->description = "question";
+      $question->state = 'propuesta';
+      $question->user_id = 1;
+      $question->save();
+      //first option
+      $answer1 = new Answer();
+      $answer1->description = $request->answer1;
+      $answer1->question_id = $question->id;
+      $answer1->save();
+      //second option
+      $answer2 = new Answer();
+      $answer2->description = $request->answer2;
+      $answer2->question_id = $question->id;
+      $answer2->save();
+      //third option
+      $answer3 = new Answer();
+      $answer3->description = $request->answer3;
+      $answer3->question_id = $question->id;
+      $answer3->save();
     }
 
     /**

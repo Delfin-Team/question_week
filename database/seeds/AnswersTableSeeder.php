@@ -11,6 +11,7 @@ class AnswersTableSeeder extends Seeder
      */
     public function run()
     {
+      //answers for question1
       DB::table('answers')->insert([
           'description' => 'Mal',
           'question_id' => 1
@@ -23,6 +24,7 @@ class AnswersTableSeeder extends Seeder
           'description' => 'Muy Bien',
           'question_id' => 1
       ]);
+      //answers for question2
       DB::table('answers')->insert([
           'description' => 'Mal',
           'question_id' => 2
@@ -34,6 +36,45 @@ class AnswersTableSeeder extends Seeder
       DB::table('answers')->insert([
           'description' => 'Muy Bien',
           'question_id' => 2
+      ]);
+      //answers for question3
+      DB::table('answers')->insert([
+          'description' => 'Mal',
+          'question_id' => 3
+      ]);
+      DB::table('answers')->insert([
+          'description' => 'Regular',
+          'question_id' => 3
+      ]);
+      DB::table('answers')->insert([
+          'description' => 'Muy Bien',
+          'question_id' => 3
+      ]);
+      //answers for question4
+      DB::table('answers')->insert([
+          'description' => 'Mal',
+          'question_id' => 4
+      ]);
+      DB::table('answers')->insert([
+          'description' => 'Regular',
+          'question_id' => 4
+      ]);
+      DB::table('answers')->insert([
+          'description' => 'Muy Bien',
+          'question_id' => 4
+      ]);
+      //answers for question5
+      DB::table('answers')->insert([
+          'description' => 'Mal',
+          'question_id' => 5
+      ]);
+      DB::table('answers')->insert([
+          'description' => 'Regular',
+          'question_id' => 5
+      ]);
+      DB::table('answers')->insert([
+          'description' => 'Muy Bien',
+          'question_id' => 5
       ]);
     }
 }

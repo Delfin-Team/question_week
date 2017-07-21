@@ -11,6 +11,7 @@ class GroupsTableSeeder extends Seeder
      */
     public function run()
     {
+      //fake group 1
       DB::table('groups')->insert([
           'name' => 'First group',
           'user_id' => 1,
@@ -18,6 +19,23 @@ class GroupsTableSeeder extends Seeder
       DB::table('group_user')->insert([
           'user_id' => 1,
           'group_id' => 1,
+      ]);
+      DB::table('group_user')->insert([
+          'user_id' => 2,
+          'group_id' => 1,
+      ]);
+      //fake group 2
+      DB::table('groups')->insert([
+          'name' => 'Perenganito\'s group',
+          'user_id' => 3,
+      ]);
+      DB::table('group_user')->insert([
+          'user_id' => 3,
+          'group_id' => 2,
+      ]);
+      DB::table('group_user')->insert([
+          'user_id' => 4,
+          'group_id' => 2,
       ]);
 
     }

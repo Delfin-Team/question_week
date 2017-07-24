@@ -26,3 +26,14 @@ Route::resource('answers','Api\AnswersController');
 
 Route::resource('groups','Api\GroupsController');
 Route::resource('users','Api\UsersController');
+
+
+//Logging
+Route::post('authenticate','Api\UsersController@authenticate');
+//register
+Route::post('register','Api\UsersController@register');
+
+Route::middleware(['jwt.auth'])->group(function () {
+  Route::resource('groups','Api\GroupsController');
+
+});

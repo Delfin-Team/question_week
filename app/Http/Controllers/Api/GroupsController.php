@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Group;
-use App\User;
+
 use Carbon\Carbon;
 use App\Question;
+use App\User;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 class GroupsController extends Controller
 {
     /**
@@ -44,6 +47,9 @@ class GroupsController extends Controller
      }
     public function questionsOfWeek($id)
     {
+
+
+
       $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d H:i:s');
       $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d H:i:s');
       $questions = Question::where([
@@ -57,7 +63,8 @@ class GroupsController extends Controller
     }
     public function index()
     {
-        $user = User::find(1);
+        $token = JWTAUth::getToken();
+        $user = JWTAUth::toUser($token);
         $groups = $user->groups;
         return response()->json(['groups' => $groups] , 200);
     }

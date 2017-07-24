@@ -16,6 +16,7 @@ class QuestionsController extends Controller
      */
     public function questionWeek()
     {
+
       $current_date = Carbon::now();
       $sundayOfLastWeek = Carbon::now()->previous(Carbon::SUNDAY)->format('Y-m-d H:i:s');
 

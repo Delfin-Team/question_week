@@ -25,3 +25,4 @@ Route::resource('questions','Api\QuestionsController');
 Route::resource('answers','Api\AnswersController');
 
 Route::resource('groups','Api\GroupsController');
+Route::resource('users','Api\UsersController');

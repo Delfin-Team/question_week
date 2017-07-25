@@ -30,10 +30,11 @@ class Question extends Model
     {
       return $this->belongsToMany('App\User','user_has_vote');
     }
+    //the user already vote for the next question week?
     public function getAlreadyVoteAttribute()
     {
       $current_user = Auth::user()->id;
-      $already = UserHasvote::where(
+      $already = QuestionsUsers::where(
         [
           ['user_id','=',$current_user],
           ['question_id','=',$this->id],
@@ -46,10 +47,11 @@ class Question extends Model
       }
       return $already;
     }
+    //the user already vote for the question week?
     public function getAlreadyAnsweredAttribute()
     {
       $current_user = Auth::user()->id;
-      $already = QuestionsUsers::where(
+      $already = UserHasvote::where(
         [
           ['user_id','=',$current_user],
           ['question_id','=',$this->id],

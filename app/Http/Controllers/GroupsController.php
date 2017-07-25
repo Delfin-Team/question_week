@@ -7,6 +7,7 @@ use Auth;
 use App\Group;
 use App\Question;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 class GroupsController extends Controller
 {
     /**
@@ -25,9 +26,25 @@ class GroupsController extends Controller
     {
 
       $group = Group::find($idGroup);
-      $group->users()->attach($idUser);
 
-      return response()->json(['response' => 'ok'],200);
+      $belongsToGroup = DB::table('group_user')->where([
+                                                  ['user_id','=', $idUser],
+                                                  ['group_id','=', $idGroup],
+                                                ])->first();
+      if ($belongsToGroup != null) {
+        return response()->json(['response' => false],200);
+      }
+
+      $group->users()->attach($idUser);
+      return response()->json(['response' => true],200);
+    }
+    public function deleteUser($idUser, $idGroup)
+    {
+
+      $group = Group::find($idGroup);
+
+      $group->users()->detach($idUser);
+      return response()->json(['response' => true],200);
     }
     /**
      * Show the form for creating a new resource.

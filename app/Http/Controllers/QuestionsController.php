@@ -58,7 +58,11 @@ class QuestionsController extends Controller
     {
         return view('question.create');
     }
-
+    public function winners($id)
+    {
+      $questions = Question::where('state' , 'ganadora')->get();
+      return view('question.winners', ['questions' => $questions]);
+    }
     /**
      * Store a newly created resource in storage.
      *

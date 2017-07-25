@@ -2,7 +2,8 @@
 
 @section('content')
   <h1 class="text-center">{{$question->title}}</h1>
-  <button type="button" id="showMeTheGraphs" class="btn btn-info" name="{{$question->id}}">Ver resultados</button>
+  <input type="hidden" name="" value="{{$question->id}}" id="question_id">
+
   <canvas id="votes" width="100px" height="100px"></canvas>
 @endsection
 
@@ -10,12 +11,14 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js">
   </script>
   <script type="text/javascript">
-    $("#showMeTheGraphs").on('click',function(){
-      var myid = $(this).attr('name');
+    var question_id = $("#question_id").val();
+
+
+      
       $.ajax({
-        url : '/votesanswers/' + myid,
+        url : '/votesanswers/' + question_id,
         type : 'GET',
-    
+
         dataType : 'json',
         success : function(data) {
 
@@ -70,7 +73,7 @@
         }
     });
 
-    });
+
   //ajax request
   function getRandomInt() {
     return parseInt(Math.random() * (7));

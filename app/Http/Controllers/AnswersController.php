@@ -5,8 +5,8 @@ use App\Question;
 use Illuminate\Http\Request;
 use App\Answer;
 use Auth;
-class AnswersController extends Controller
-{
+use App\UserHasvote;
+class AnswersController extends Controller{
     /**
      * Display a listing of the resource.
      *
@@ -62,13 +62,18 @@ class AnswersController extends Controller
       $question = Question::find($id);
 
       $current_user = Auth::user();
-      //add register on intermediate table
-      $question->users()->attach($current_user);
 
+      //add register on intermediate table
+
+      $newVote = UserHasvote::create([
+        'user_id' => $current_user->id,
+        'question_id' => $id
+      ]);
+      
       $answer = Answer::find($request->answer);
       $answer->votes += 1;
       $answer->save();
-      return redirect()->route('questions.index');
+      return redirect()->route('groups.index');
     }
     public function edit($id)
     {

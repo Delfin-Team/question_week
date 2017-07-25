@@ -34,6 +34,10 @@ Route::middleware(['auth'])->group(function(){
     'uses' => 'QuestionsController@graphics',
     'as' => 'showGraphs'
   ]);
+  Route::get('/winners/{id}',[
+    'uses' => 'QuestionsController@winners',
+    'as' => 'winners'
+  ]);
   Route::get('/votesQuestions',[
     'uses' => 'QuestionsController@totalVotes',
     'as' => 'votesQuestions',
@@ -50,6 +54,10 @@ Route::middleware(['auth'])->group(function(){
   Route::post('adduser/{idUser}/{idGroup}',[
     'uses' => 'GroupsController@addUser',
     'as' => 'addUserToGroup',
+  ]);
+  Route::post('deleteuser/{idUser}/{idGroup}',[
+    'uses' => 'GroupsController@deleteUser',
+    'as' => 'deleteUserOfGroup',
   ]);
   Route::resource('questions','QuestionsController');
   Route::resource('answers','AnswersController');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Group;
 class UsersController extends Controller
 {
     /**
@@ -48,7 +49,8 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        $users = Group::find($id)->users;
+        return response()->json(['users' => $users],200);
     }
 
     /**

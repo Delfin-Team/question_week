@@ -77,14 +77,7 @@
                 </div>
             @endif
 
-            <div class="content">
-                <div class="title m-b-md">
-                    DELFIN HASTA EL FIN
-                </div>
-                <img
-                src="http://www.dmax.marca.com/wp-content/uploads/2015/10/delfin.jpg"
-                alt="delfin" class="img-rounded" style="border-radius:50%">
-
+            <div class="container">
 
             </div>
         </div>

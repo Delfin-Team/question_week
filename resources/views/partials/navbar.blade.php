@@ -1,67 +1,65 @@
-<nav class="navbar navbar-default" style="background: ;">
-    <div class="container-fluid">
+<nav>
+  @if (Auth::guest())
+    <div class="nav-wrapper indigo accent-3">
+      <a href="index.html" class="brand-logo"> &nbsp Pregunta de la semana</a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="{{route('login')}}">Iniciar sesión</a></li>
+        <li><a href="{{route('register')}}">Registro</a></li>
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+        <li><a href="login.html">Iniciar sesión</a></li>
+        <li><a href="register.html">Registro</a></li>
+      </ul>
+    </div>
+  @else
 
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{route('questions.index')}}">Pregunta de la semana</a>
-        </div>
+	    <div class="nav-wrapper indigo accent-3">
+	      <a href="{{route('groups.index')}}" class="brand-logo">&nbsp Pregunta de la Semana</a>
+	      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+	      <ul id="nav-mobile" class="right hide-on-med-and-down">
+	        <li><a href="{{route('questions.create')}}">Proponer</a></li>
+	        <li><a href="">Preguntas ganadoras</a></li>
+	        <li><a href="votes.html">Votos</a></li>
+	        <li><a href="{{route('groups.index')}}">Grupos</a></li>
+          <li>
+              <a href="{{ route('logout') }}"
+                  onclick="event.preventDefault();
+                           document.getElementById('logout-form').submit();">
+                  Logout
+              </a>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Preguntas Ganadoras <span class="sr-only">(current)</span></a></li>
-                <li>
-                  <a href="{{route('showGraphs')}}">
-                    <i class="fa fa-line-chart"></i>
-                    Votos</a>
-                  </li>
-                <li>
-                  <a href="{{route('questions.create')}}">
-                    <i class="fa fa-commenting-o" aria-hidden="true"></i>
-                    Proponer
-                  </a>
-                </li>
-                <li>
-                  <a href="{{route('groups.index')}}">
-                    <i class="fa fa-users" aria-hidden="true"></i>
-                    Grupos
-                  </a>
-                </li>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  {{ csrf_field() }}
+              </form>
+          </li>
+	      </ul>
+	      <ul class="side-nav" id="mobile-demo">
+	        <li><a href="propose.html"><i class="material-icons">lightbulb_outline</i>Proponer</a></li>
+	        <li><a href="winquestions.html"><i class="material-icons">timeline</i>Preguntas ganadoras</a></li>
+	        <li><a href="votes.html"><i class="material-icons">thumbs_up_down</i>Votos</a></li>
+	        <li><a href="{{route('groups.index')}}"><i class="material-icons">group</i>Grupos</a></li>
+          <li>
+              <a href="{{ route('logout') }}"
+                  onclick="event.preventDefault();
+                           document.getElementById('logout-form').submit();">
+                  Logout
+              </a>
 
-            </ul>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  {{ csrf_field() }}
+              </form>
+          </li>
 
-              <ul class="nav navbar-nav navbar-right">
-                <!-- Authentication Links -->
-                @if (Auth::guest())
-                    <li><a href="{{ route('login') }}">Login</a></li>
-                    <li><a href="{{ route('register') }}">Register</a></li>
-                @else
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ Auth::user()->name }} <span class="caret"></span>
-                        </a>
-
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    Logout
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+	      </ul>
+	    </div>
+  @endif
 </nav>
+
+@section('extra-js')
+<script type="text/javascript">
+  $( document ).ready(function(){
+    $(".button-collapse").sideNav();
+  })
+</script>
+@endsection

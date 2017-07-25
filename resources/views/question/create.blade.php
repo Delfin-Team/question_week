@@ -1,47 +1,44 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="row">
-        <div class="col-xs-8 col-xs-offset-2">
-          <h1>Create a new question:</h1>
-
-            <form action="{{ route('questions.store') }}" method="POST">
-                {{csrf_field()}}
-                <div class="form-group">
-                    <label for="title">Title:</label>
-                    <input type="text" class="form-control" name="title" required>
-                </div>
-                <div class="form-group">
-                    <label for="title">Description:</label>
-                    <input type="text" class="form-control" name="description" required>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h3><well>Posible respuestas:</well></h3>
-                    </div>
-                    <div class="col-xs-12 col-lg-4">
-                        <div class="form-group">
-                            <label for="answer1">Answer 1:</label>
-                            <input type="text" class="form-control" name="answer1" required>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-lg-4">
-                        <div class="form-group">
-                            <label for="answer2">Answer 2:</label>
-                            <input type="text" class="form-control" name="answer2" required>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-lg-4">
-                        <div class="form-group">
-                            <label for="answer3">Answer 3:</label>
-                            <input type="text" class="form-control" name="answer3" required>
-                        </div>
-                    </div>
-                </div>
-                <input type="submit" class="btn btn-success" value="Registrar">
-            </form>
+  <h1 class="text center">Proponer...</h1>
+  <div class="container" id="main">
+    <!-- Page Content goes here -->
+   <div class="row">
+    <form class="col s12" action="{{route('questions.store')}}" method="POST">
+      {{ csrf_field() }}
+      <div class="row">
+         <div class="input-field col s12 ">
+          <i class="material-icons prefix">insert_emoticon</i>
+          <input id="icon_prefix" type="text" class="validate" v-model="titleQuestion" name="title">
+          <label for="icon_prefix">Titulo:</label>
         </div>
-    </div>
+
+        <h3 class="text center">Posibles respuestas</h3>
+        <div class="input-field col s12 xl4 m12">
+          <i class="material-icons prefix">local_activity</i>
+          <input id="icon_prefix" type="text" class="validate" v-model="answer1Question" name="answer1">
+          <label for="icon_prefix">Respuesta 1</label>
+        </div>
+        <div class="input-field col s12 xl4 m12">
+          <i class="material-icons prefix">local_activity</i>
+          <input id="icon_telephone" type="tel" class="validate" v-model="answer2Question" name="answer2">
+          <label for="icon_telephone">Respuesta 2</label>
+        </div>
+        <div class="input-field col s12 xl4 m12">
+          <i class="material-icons prefix">local_activity</i>
+          <input id="icon_telephone" type="tel" class="validate" v-model="answer3Question" name="answer3">
+          <label for="icon_telephone">Respuesta 3</label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="center-align">
+    <button class="btn waves-effect waves-light" type="submit" v-on:click="addQuestion" v-if="titleQuestion" >Enviar
+            <i class="material-icons right">send</i>
+        </button>
+  </div>
+
+  </div>
 
     @endsection

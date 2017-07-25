@@ -47,7 +47,12 @@ Route::middleware(['auth'])->group(function(){
     'uses' => 'QuestionsController@showvotes',
     'as' => 'showGraphsVotes',
   ]);
+  Route::post('adduser/{idUser}/{idGroup}',[
+    'uses' => 'GroupsController@addUser',
+    'as' => 'addUserToGroup',
+  ]);
   Route::resource('questions','QuestionsController');
   Route::resource('answers','AnswersController');
   Route::resource('groups','GroupsController');
+  Route::resource('users','UsersController');
 });

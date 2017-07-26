@@ -20,7 +20,11 @@ class QuestionsTableSeeder extends Seeder
             'user_id' => 1,
             'votes' => 13,
             'group_id' => 1,
+<<<<<<< HEAD
             'created_at' => '2017-07-13 20:55:55',
+=======
+            'created_at' => $todayIs,//'2017-07-25 16:44:46'
+>>>>>>> 4de17094db1b1267d1d86a09c1826d487b7419dc
         ]);
         DB::table('questions')->insert([
             'title' => "question 2, group 1",

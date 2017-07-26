@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::middleware(['auth'])->group(function(){
-  Route::put('/addVote/{id}',[
+  Route::put('/addvote/{id}',[
       'uses'=> 'QuestionsController@addVote',
       'as' => 'addVote',
   ]);

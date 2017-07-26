@@ -20,7 +20,7 @@ class QuestionsTableSeeder extends Seeder
             'user_id' => 1,
             'votes' => 13,
             'group_id' => 1,
-            'created_at' => $todayIs,
+            'created_at' => $todayIs,//'2017-07-25 16:44:46'
         ]);
 
         $todayIs2 = Carbon::now()->previous(Carbon::MONDAY)->previous(Carbon::MONDAY)->format('Y-m-d H:i:s');

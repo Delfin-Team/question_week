@@ -73,30 +73,33 @@
 
   <!--Questions proposed-->
 
-	<h1>Preguntas propuestas</h1>
-  <div class="carousel" >
-    <div class="row">
-      @foreach ($questions as $question)
-        <div class="col s12 m6 l4 xl12">
-          <div class="carousel-item">
-      	  <div class="card">
-              <div class="card-image">
-                <img src="https://lorempixel.com/250/250/nature/1">
-                <span class="card-title">{{$question->title}}</span>
-                <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">thumb_up</i></a>
-              </div>
-              <div class="card-content">
-                <p>Votos: {{$question->votes}}</p>
-              </div>
-           </div>
-          </div>
-        </div>
-      @endforeach
 
-    </div>
-  </div>
 
     <div id="main" class="container">
+      <h1>Preguntas propuestas</h1>
+      <div class="carousel" >
+        <div class="row">
+          @foreach ($questions as $question)
+            <div class="col s12 m6 l4 xl12">
+              <div class="carousel-item">
+          	  <div class="card">
+                  <div class="card-image">
+                    <img src="https://lorempixel.com/250/250/nature/1">
+                    <span class="card-title">{{$question->title}}</span>
+                    @if (!$question->AlreadyVote)
+                      <a class="btn-floating halfway-fab waves-effect waves-light red" v-on:click="addVoteToQuestion({{$question->id}})"><i class="material-icons">thumb_up</i></a>
+                    @endif
+                  </div>
+                  <div class="card-content">
+                    <p>Votos: {{$question->votes}}</p>
+                  </div>
+               </div>
+              </div>
+            </div>
+          @endforeach
+
+        </div>
+      </div>
       <!-- Modal Structure | add user-->
       <input type="hidden" name="" value="{{$group->id}}" v-model="group_id" id="group_id">
       <div id="modal2" class="modal">
@@ -227,6 +230,21 @@
                   this.users.pop(index);
 
                 }
+              });
+            },
+            addVoteToQuestion: function(id){
+              console.log("add vote to question: " + id);
+              axios.put("http://localhost:8000/addvote/" + id ).then(response => {
+                console.log(response.data.status);
+                /*
+                if (response.data.response) {
+                  var $toastContent = $('<div class="card-panel green darken-1">Usuario eliminado</div>');
+                  Materialize.toast($toastContent, 2000);
+                  this.users.pop(index);
+
+                }
+                */
+
               });
             }
           },

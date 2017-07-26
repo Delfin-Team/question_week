@@ -103,9 +103,9 @@ class QuestionsController extends Controller
         $question = Question::find($id);
         $current_user = Auth::user();
         $question->votes += 1;
-        $question->votesUser()->attach($current_user);
+        $question->users()->attach($current_user);
         $question->save();
-        return redirect()->route('showGraphs');
+        return response()->json(['question' => $question],200);
     }
     public function registerVote(Rquest $request, $id)
     {

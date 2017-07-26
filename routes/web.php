@@ -29,11 +29,15 @@ Route::middleware(['auth'])->group(function(){
       'uses'=> 'AnswersController@addVote',
       'as' => 'answer.addVote',
   ]);
-
+  Route::get('/getgroups',[
+    'uses' => 'GroupsController@getGroups',
+    'as' => 'getGroups'
+  ]);
   Route::get('/questions/graphics',[
     'uses' => 'QuestionsController@graphics',
     'as' => 'showGraphs'
   ]);
+
   Route::get('/winners/{id}',[
     'uses' => 'QuestionsController@winners',
     'as' => 'winners'

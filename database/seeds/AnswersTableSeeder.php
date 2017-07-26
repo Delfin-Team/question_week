@@ -361,6 +361,6 @@ class AnswersTableSeeder extends Seeder
       DB::table('answers')->insert([
           'description' => 'Muy Bien',
           'question_id' => 27
-      ])6
+      ]);
     }
 }

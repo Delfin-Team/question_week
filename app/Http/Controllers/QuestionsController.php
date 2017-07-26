@@ -75,8 +75,9 @@ class QuestionsController extends Controller
         $current_user = Auth::user();
         $question = new Question();
         $question->title = $request->title;
-        $question->description = $request->description;
+        $question->description = "pregunta de la semana";
         $question->state = 'propuesta';
+        $question->group_id = $request->group_id;
         $question->user_id = $current_user->id;
         $question->save();
         //first option
@@ -94,8 +95,9 @@ class QuestionsController extends Controller
         $answer3->description = $request->answer3;
         $answer3->question_id = $question->id;
         $answer3->save();
-
-        return redirect()->route('questions.index');
+        $question->answers;
+        return back();
+        //return redirect()->route('questions.index');
     }
     //find question, add vote to question and disable question to user()
     public function addVote(Request $request, $id){

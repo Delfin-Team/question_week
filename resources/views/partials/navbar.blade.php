@@ -18,10 +18,7 @@
 	      <a href="{{route('groups.index')}}" class="brand-logo">&nbsp Pregunta de la Semana</a>
 	      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 	      <ul id="nav-mobile" class="right hide-on-med-and-down">
-	        <li><a href="{{route('questions.create')}}">Proponer</a></li>
-	        <li><a href="">Preguntas ganadoras</a></li>
-	        <li><a href="votes.html">Votos</a></li>
-	        <li><a href="{{route('groups.index')}}">Grupos</a></li>
+	        
           <li>
               <a href="{{ route('logout') }}"
                   onclick="event.preventDefault();

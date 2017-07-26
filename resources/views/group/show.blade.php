@@ -3,78 +3,77 @@
 @section('content')
   <!--question week-->
   <h1 class="text-center">{{$questionWeek->title}}</h1>
-  <div class="container blue lighten-5 z-depth-3" >
-		   <h4 class="indigo center-align"><font color="white" id="titleQuestion" ></font></h4>
-		    <div class="container border-radius: 10px" id="cardQuestion">
-		      <div class="row">
-		        <div class="col s9 offset s3">
-		          <!--Materialize Components Forms-->
-		          <div class="row">
+  @if ($questionWeek != null)
+    <div class="container blue lighten-5 z-depth-3" >
+  		   <h4 class="indigo center-align"><font color="white" id="titleQuestion" ></font></h4>
+  		    <div class="container border-radius: 10px" id="cardQuestion">
+  		      <div class="row">
+  		        <div class="col s9 offset s3">
+  		          <!--Materialize Components Forms-->
+  		          <div class="row">
 
 
-		              <div class="row">
-		                <h5 id="qCreator"><i class="material-icons">face</i>  Creador: {{$questionWeek->user->email}}</h5>
-		                <h5 id="created"><i class="material-icons">schedule</i> Creado: {{$questionWeek->created_at->diffForHumans()}}</h5>
-		                <h5 id="totalVotes"><i class="material-icons">star</i> Votos: {{$questionWeek->votes}}</h5>
-		              </div>
+  		              <div class="row">
+  		                <h5 id="qCreator"><i class="material-icons">face</i>  Creador: {{$questionWeek->user->email}}</h5>
+  		                <h5 id="created"><i class="material-icons">schedule</i> Creado: {{$questionWeek->created_at->diffForHumans()}}</h5>
+  		                <h5 id="totalVotes"><i class="material-icons">star</i> Votos: {{$questionWeek->votes}}</h5>
+  		              </div>
 
-		              <div class="row">
-		                <hr>
-		                <div class="input-field col s12">
-		                  <!-- Modal Trigger -->
-                      @if (!$questionWeek->AlreadyAnswered)
-                          <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Responder</a>
-                      @endif
+  		              <div class="row">
+  		                <hr>
+  		                <div class="input-field col s12">
+  		                  <!-- Modal Trigger -->
+                        @if (!$questionWeek->AlreadyAnswered)
+                            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Responder</a>
+                        @endif
 
-		                  	  	<!--answers-->
-								 	<div id="answersList">
-								 	  <!-- Modal Structure -->
-									  <div id="modal1" class="modal">
-									    <div class="modal-content">
-                        <h4>{{$questionWeek->title}}</h4>
+  		                  	  	<!--answers-->
+  								 	<div id="answersList">
+  								 	  <!-- Modal Structure -->
+  									  <div id="modal1" class="modal">
+  									    <div class="modal-content">
+                          <h4>{{$questionWeek->title}}</h4>
 
-                          @foreach ($questionWeek->answers as $answer)
-                            <form action="{{route('answer.addVote',$questionWeek)}}" method="post">
-                              {{ csrf_field() }}
-                              <div class="input-field col s12">
-                                <p >{{$answer->description}}</p>
-                                <input type="hidden" name="answer" value="{{$answer->id}}">
+                            @foreach ($questionWeek->answers as $answer)
+                              <form action="{{route('answer.addVote',$questionWeek)}}" method="post">
+                                {{ csrf_field() }}
+                                <div class="input-field col s12">
+                                  <p >{{$answer->description}}</p>
+                                  <input type="hidden" name="answer" value="{{$answer->id}}">
+                                </div>
+                                <div class="row">
+                                  <button class="btn waves-effect waves-light" type="submit" name="action">
+                                      <i class="material-icons right">thumb_up</i>
+                                  </button>
                               </div>
-                              <div class="row">
-                                <button class="btn waves-effect waves-light" type="submit" name="action">
-                                    <i class="material-icons right">thumb_up</i>
-                                </button>
-                            </div>
-                          </form>
-                          @endforeach
+                            </form>
+                            @endforeach
 
 
 
-									    </div>
-									    <div class="modal-footer">
-									      <a href="#!" class="modal-action modal-close  waves-red btn-flat blue darken-3 white-text">Cancelar</a>
-									    </div>
-									  </div>
-									</div>
-							  	<!--end-->
-		                  <br>
-		                  <br>
-		                  <h6><a href="{{route('showGraphsVotes',$questionWeek->id)}}"><i class="material-icons">show_chart</i> Ver votos</a></h6>
-		                </div>
-		              </div>
+  									    </div>
+  									    <div class="modal-footer">
+  									      <a href="#!" class="modal-action modal-close  waves-red btn-flat blue darken-3 white-text">Cancelar</a>
+  									    </div>
+  									  </div>
+  									</div>
+  							  	<!--end-->
+  		                  <br>
+  		                  <br>
+  		                  <h6><a href="{{route('showGraphsVotes',$questionWeek->id)}}"><i class="material-icons">show_chart</i> Ver votos</a></h6>
+  		                </div>
+  		              </div>
 
 
-		          </div>
-		        </div>
-		      </div>
-		    </div>
-		</div>
+  		          </div>
+  		        </div>
+  		      </div>
+  		    </div>
+  		</div>
+  @endif
   <!--end - questionweek-->
 
   <!--Questions proposed-->
-
-
-
     <div id="main" class="container">
       <h1>Preguntas propuestas</h1>
       <div class="carousel" >
@@ -153,6 +152,58 @@
           <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
       </div>
+      <!-- Modal Structure | create a new question-->
+      <div id="modal4" class="modal">
+        <div class="modal-content">
+          <div class="row">
+           <form class="col s12" action="{{route('questions.store')}}" method="POST">
+             {{ csrf_field() }}
+             <div class="row">
+               <input type="hidden" name="group_id" value="{{$group->id}}">
+                <div class="input-field col s12 ">
+                 <i class="material-icons prefix">insert_emoticon</i>
+                 <input id="icon_prefix" type="text" class="validate" v-model="titleQuestion" name="title">
+                 <label for="icon_prefix">Titulo:</label>
+               </div>
+
+               <h3 class="text center">Posibles respuestas</h3>
+               <div class="input-field col s12 xl4 m12">
+                 <i class="material-icons prefix">local_activity</i>
+                 <input id="icon_prefix" type="text" class="validate" v-model="answer1" name="answer1">
+                 <label for="icon_prefix">Respuesta 1</label>
+               </div>
+               <div class="input-field col s12 xl4 m12">
+                 <i class="material-icons prefix">local_activity</i>
+                 <input id="icon_telephone" type="tel" class="validate" v-model="answer2" name="answer2">
+                 <label for="icon_telephone">Respuesta 2</label>
+               </div>
+               <div class="input-field col s12 xl4 m12">
+                 <i class="material-icons prefix">local_activity</i>
+                 <input id="icon_telephone" type="tel" class="validate" v-model="answer3" name="answer3">
+                 <label for="icon_telephone">Respuesta 3</label>
+               </div>
+             </div>
+             <div class="center-align">
+               <button class="btn waves-effect waves-light" type="submit" v-on:click="addQuestion" v-if="titleQuestion" >Enviar
+                       <i class="material-icons right">send</i>
+                </button>
+             </div>
+
+           <div class="center-align">
+             <button class="btn waves-effect waves-light" type="submit" v-on:click="addQuestion" >Enviar
+                     <i class="material-icons right">send</i>
+              </button>
+            </form>
+           </div>
+         </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn waves-effect waves-light" type="submit" v-on:click="addQuestion" v-if="titleQuestion" >Enviar
+                  <i class="material-icons right">send</i>
+           </button>
+          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+        </div>
+      </div>
   </div>
 
 
@@ -161,10 +212,12 @@
           <i class="large material-icons">add</i>
         </a>
         <ul>
-          <li><a class="btn-floating red modal-trigger" href="#modal2"><i class="material-icons">person_add</i></a></li>
-          <li><a class="btn-floating orange darken-1 modal-trigger" href="#modal3"><i class="material-icons">delete</i></a></li>
+          @if ($owner->id == Auth::user()->id)
+            <li><a class="btn-floating red modal-trigger" href="#modal2"><i class="material-icons">person_add</i></a></li>
+            <li><a class="btn-floating orange darken-1 modal-trigger" href="#modal3"><i class="material-icons">delete</i></a></li>
+          @endif
           <li><a class="btn-floating green" href="{{route('winners',$group->id)}}"><i class="material-icons">timeline</i></a></li>
-          <li><a class="btn-floating blue"><i class="material-icons">lightbulb_outline</i></a></li>
+          <li><a class="btn-floating blue modal-trigger" href="#modal4"><i class="material-icons">lightbulb_outline</i></a></li>
         </ul>
       </div>
 
@@ -174,6 +227,7 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
   <script type="text/javascript">
     var aux = $("#group_id").val();
+
     $(document).ready(function(){
       $('.modal').modal();
       $('.carousel').carousel();

@@ -26,7 +26,7 @@ class GroupsController extends Controller
     public function getGroups()
     {
       $current_user = Auth::user();
-      $userGroups = $current_user->groups;
+      $userGroups = $current_user->groupsCreated;
       return response()->json(['groups' => $userGroups],200);
 
     }
@@ -74,27 +74,30 @@ class GroupsController extends Controller
     {
         $group = new Group();
         $group->name = $request->name;
+
         $group->user_id = Auth::user()->id;
         $group->save();
+
         $question = Question::create([
           'title' => '¿Qué te parece este grupo?',
           'description' => 'pregunta',
-          'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+          'created_at' => Carbon::now()->previous(Carbon::THURSDAY)->format('Y-m-d H:i:s'),
           'user_id' => Auth::user()->id,
           'group_id' => $group->id,
           'state' => 'propuesta',
         ]);
-        Answer::create([
+
+        $question->answers()->create([
           'description' => 'Normal',
-          'question_id' => $question->id,
+          'votes' => 0
         ]);
-        Answer::create([
+        $question->answers()->create([
           'description' => 'Bueno',
-          'question_id' => $question->id,
+          'votes' => 0
         ]);
-        Answer::create([
+        $question->answers()->create([
           'description' => 'Muy bueno',
-          'question_id' => $question->id,
+          'votes' => 0
         ]);
 
         return response()->json(['group' => $group],200);

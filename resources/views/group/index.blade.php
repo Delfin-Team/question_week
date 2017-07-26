@@ -83,8 +83,8 @@
                   axios.post("http://localhost:8000/groups", {
                     name: this.nameGroup,
                   }).then(response => {
-                      console.log(response.status);
-                      if (response.status === 200) {
+                      console.log(response);
+                      if (response.status == 200) {
                         console.log(response.data.group);
                         this.groups.push(response.data.group);
                       }

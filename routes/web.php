@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -21,6 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::middleware(['auth'])->group(function(){
+  //questions
   Route::put('/addvote/{id}',[
       'uses'=> 'QuestionsController@addVote',
       'as' => 'addVote',
@@ -29,15 +30,10 @@ Route::middleware(['auth'])->group(function(){
       'uses'=> 'AnswersController@addVote',
       'as' => 'answer.addVote',
   ]);
-  Route::get('/getgroups',[
-    'uses' => 'GroupsController@getGroups',
-    'as' => 'getGroups'
-  ]);
   Route::get('/questions/graphics',[
     'uses' => 'QuestionsController@graphics',
     'as' => 'showGraphs'
   ]);
-
   Route::get('/winners/{id}',[
     'uses' => 'QuestionsController@winners',
     'as' => 'winners'
@@ -46,7 +42,6 @@ Route::middleware(['auth'])->group(function(){
     'uses' => 'QuestionsController@totalVotes',
     'as' => 'votesQuestions',
   ]);
-
   Route::get('/votesanswers/{id}',[
     'uses' => 'QuestionsController@totalVotes',
     'as' => 'votesQuestions',
@@ -54,6 +49,14 @@ Route::middleware(['auth'])->group(function(){
   Route::get('/graphicsquestion/{id}',[
     'uses' => 'QuestionsController@showvotes',
     'as' => 'showGraphsVotes',
+  ]);
+  //extra ursl for groups
+  Route::get('/getgroups',[
+    'uses' => 'GroupsController@getGroups',
+    'as' => 'getGroups'
+  ]);
+  Route::get('/detailgroup/{id}',[
+    'uses' => 'GroupsController@detailGroup',
   ]);
   Route::post('adduser/{idUser}/{idGroup}',[
     'uses' => 'GroupsController@addUser',

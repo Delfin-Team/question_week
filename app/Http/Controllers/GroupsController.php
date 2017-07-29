@@ -21,13 +21,14 @@ class GroupsController extends Controller
     {
         $current_user = Auth::user();
         $userGroups = $current_user->groups;
-        return view('group.index',['userGroups' => $userGroups]);
+        return view('group.index');
     }
     public function getGroups()
     {
       $current_user = Auth::user();
-      $userGroups = $current_user->groupsCreated;
-      return response()->json(['groups' => $userGroups],200);
+      $userGroups = $current_user->groups;
+      $possibleGroups = Group::where('private',false)->get();
+      return response()->json(['groups' => $userGroups, 'possibleGroups' => $possibleGroups],200);
 
     }
     public function addUser($idUser, $idGroup)
@@ -77,11 +78,11 @@ class GroupsController extends Controller
 
         $group->user_id = Auth::user()->id;
         $group->save();
-
+        $group->users()->attach(Auth::user()->id);
         $question = Question::create([
           'title' => '¿Qué te parece este grupo?',
           'description' => 'pregunta',
-          'created_at' => Carbon::now()->previous(Carbon::THURSDAY)->format('Y-m-d H:i:s'),
+          'created_at' => Carbon::now()->previous(Carbon::SUNDAY)->format('Y-m-d H:i:s'),
           'user_id' => Auth::user()->id,
           'group_id' => $group->id,
           'state' => 'propuesta',
@@ -109,6 +110,48 @@ class GroupsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function detailGroup($id)
+    {
+      $group = Group::find($id);
+      $owner = User::find($group->user_id);
+      $current_date = Carbon::now();
+      $sundayOfLastWeek = Carbon::now()->previous(Carbon::SUNDAY)->format('Y-m-d H:i:s');
+      if ($current_date->dayOfWeek == 1) {
+          $mondayOfLastWeek = Carbon::now()->previous(Carbon::MONDAY)->format('Y-m-d H:i:s');
+
+      }else{
+        $mondayOfLastWeek = Carbon::now()->previous(Carbon::MONDAY)->previous(Carbon::MONDAY)->format('Y-m-d H:i:s');
+      }
+
+      $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d H:i:s');
+      $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d H:i:s');
+
+      $theWinner = Question::where([
+
+                                    ['created_at','>=',$mondayOfLastWeek],
+                                    ['created_at','<=',$sundayOfLastWeek],
+                                    ['group_id','=',$id]
+                                  ])
+                            ->orderBy('votes','DESC')->first();
+      if ($theWinner->state == "propuesta") {
+        $theWinner->state = "ganadora";
+        $theWinner->save();
+      }
+      $theWinner->alreadyAnswered = $theWinner->AlreadyAnswered;
+      $questions = Question::where([
+
+                                    ['created_at','>=',$startOfWeek],
+                                    ['created_at','<=',$endOfWeek],
+                                    ['group_id', '=', $id]
+                                  ])
+                            ->orderBy('votes','DESC')->get();
+      foreach ($questions as $question) {
+        $question->alreadyVote = $question->AlreadyVote;
+
+      }
+      return response()->json($theWinner);
+      return response()->json(['group' => $group, 'questions' => $questions, 'questionWeek' => $theWinner, 'owner' => $owner],200);
+    }
     public function show($id)
     {
         $group = Group::find($id);

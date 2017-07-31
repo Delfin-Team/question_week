@@ -22,30 +22,29 @@
       <div id="modal1" class="modal">
         <div class="modal-content">
           <h4>Agregar Grupo</h4>
-          <p>Tipo : @{{typeGroup}}</p>
           <div class="row">
                 <form class="col s12">
                   <div class="row">
                      <div class="input-field col s12">
                             <i class="material-icons prefix">people</i>
-                            <input id="icon_prefix" type="text" class="validate" v-model="nameGroup">
+                            <input type="text" class="validate" v-model="nameGroup">
                             <label for="icon_prefix">Nombre del Grupo</label>
                       </div>
-                  </div>
-                   <div class="input-field col s6 offset-s3">
+                      <div class="input-field col s6 offset-s3">
 
-                    <select v-model="typeGroup" id="typeGroup">
-                      <option value="" disabled selected>Escoge una opcion</option>
-                      <option value="1">Privado</option>
-                      <option value="2">Publico</option>
-                    </select>
-                    <label>Tipo de Grupo</label>
+                     </div>
+                     <p>
+                       <i class="material-icons prefix">lock</i>
+                      <input type="checkbox" id="test5" v-model="selected" />
+                      <label for="test5">Privado?</label>
+                     </p>
                   </div>
+
                 </form>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="modal-action modal-close waves-effect waves-green btn-flat" v-on:click="addGroup" v-if="nameGroup" > Agregar </button>
+          <button class="modal-action modal-close waves-effect waves-green btn-flat" v-on:click="addGroup" v-if="nameGroup.length > 2" > Agregar </button>
           <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
       </div>
@@ -62,7 +61,7 @@
                             <label for="icon_prefix">Nombre del Grupo</label>
                           </div>
                     <ul class="collection">
-                      <li v-for="group in searchGroupToDelete" class="collection-item"><div>@{{group.name}}<a href="#!" class="secondary-content"><i class="material-icons">delete_forever</i></a></div></li>
+                      <li v-for="(group, index) in searchGroupToDelete" class="collection-item"><div>@{{group.name}}<a href="#!" class="secondary-content" v-on:click="deleteGroup(group.id, index)"><i class="material-icons">delete_forever</i></a></div></li>
                     </ul>
 
                   </div>
@@ -87,7 +86,7 @@
                         </div>
                       <ul class="collection">
 
-                        <li v-for="group in searchGroupToJoin" class="collection-item"><div>@{{group.name}}<a href="#!" class="secondary-content"><i class="material-icons" >send</i></a></div></li>
+                        <li v-for="group in searchGroupToJoin" class="collection-item"><div>@{{group.name}}<a href="#!" class="secondary-content" v-on:click="sendRequest(group.id)"><i class="material-icons" >send</i></a></div></li>
                       </ul>
 
                     </div>
@@ -129,6 +128,8 @@
       },
       data: {
         groups: [],
+        groupsUser:[],
+        selected: "",
         possibleGroups: [],
         nameGroup: "",
         typeGroup: "",
@@ -139,27 +140,54 @@
         getGroups: function(){
           var apiURl = "http://localhost:8000/getgroups";
           axios.get(apiURl).then(response => {
-            this.groups = response.data.groups;
+            this.groups = response.data.user.groups;
+            this.groupsUser = response.data.user.groups_created;
             this.possibleGroups = response.data.possibleGroups;
+            console.log(this.groupsUser);
           });
         },
         addGroup: function(){
           axios.post("http://localhost:8000/groups", {
             name: this.nameGroup,
+            private: this.selected,
           }).then(response => {
               console.log(response);
               if (response.status == 200) {
                 console.log(response.data.group);
                 this.groups.push(response.data.group);
+                this.groupsUser.push(response.data.group);
               }
               this.nameGroup= "";
+              this.selected = "";
             }
           );
         },
+        deleteGroup: function(id, index){
+          console.log('delete with position: ' + index + ' and id: '+ id);
+
+          axios.delete("http://localhost:8000/groups/" + id).then(response => {
+              if (response.status == 200) {
+                this.groups.pop(index);
+                var $toastContent = $('<div class="card-panel green darken-1">Grupo eliminado</div>');
+                Materialize.toast($toastContent, 2000);
+                this.nameToDelete = "";
+              }
+
+            }
+          ).catch(error => {
+            var $toastContent = $('<div class="card-panel red darken-1">Ha surgido un error</div>');
+            Materialize.toast($toastContent, 2000);
+            this.nameToDelete = "";
+          });
+        },
+        sendRequest: function(id){
+          console.log(id);
+        },
       },
+
       computed:{
           searchGroupToDelete:function(){
-            return this.groups.filter((group)=>group.name.includes(this.nameToDelete));
+            return this.groupsUser.filter((group)=>group.name.includes(this.nameToDelete));
           },
           searchGroupToJoin:function(){
             return this.possibleGroups.filter((group)=>group.name.includes(this.nameToJoin));

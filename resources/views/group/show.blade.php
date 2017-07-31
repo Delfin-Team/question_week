@@ -1,11 +1,15 @@
 @extends('layouts.master')
 
 @section('content')
+  <div class="row">
+      <h2>{{$group->name}}</h2>
+  </div>
+
   <!--question week-->
-  <h1 class="text-center">{{$questionWeek->title}}</h1>
+
   @if ($questionWeek != null)
     <div class="container blue lighten-5 z-depth-3" >
-  		   <h4 class="indigo center-align"><font color="white" id="titleQuestion" ></font></h4>
+  		   <h4 class="indigo center-align"><font color="white" id="titleQuestion" ><h3 class="text-center">{{$questionWeek->title}}</h3></font></h4>
   		    <div class="container border-radius: 10px" id="cardQuestion">
   		      <div class="row">
   		        <div class="col s9 offset s3">

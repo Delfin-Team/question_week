@@ -19,16 +19,19 @@ class GroupsController extends Controller
      */
     public function index(Request $request)
     {
-        $current_user = Auth::user();
-        $userGroups = $current_user->groups;
         return view('group.index');
     }
     public function getGroups()
     {
       $current_user = Auth::user();
+      $current_user->groups;
+      $current_user->groupsCreated;
       $userGroups = $current_user->groups;
-      $possibleGroups = Group::where('private',false)->get();
-      return response()->json(['groups' => $userGroups, 'possibleGroups' => $possibleGroups],200);
+      $possibleGroups = Group::where([
+        ['private','=',false],
+        ['user_id','!=',$current_user->id],
+        ])->get();
+      return response()->json(['user' => $current_user,'possibleGroups' => $possibleGroups],200);
 
     }
     public function addUser($idUser, $idGroup)
@@ -51,7 +54,6 @@ class GroupsController extends Controller
     {
 
       $group = Group::find($idGroup);
-
       $group->users()->detach($idUser);
       return response()->json(['response' => true],200);
     }
@@ -75,7 +77,9 @@ class GroupsController extends Controller
     {
         $group = new Group();
         $group->name = $request->name;
-
+        if ($request->private) {
+            $group->private = $request->private;
+        }
         $group->user_id = Auth::user()->id;
         $group->save();
         $group->users()->attach(Auth::user()->id);
@@ -227,6 +231,6 @@ class GroupsController extends Controller
     {
         $group = Group::find($id);
         $group->delete();
-        return redirect()->route('groups.index');
+        return response()->json(['response' => 'ok'],200);
     }
 }

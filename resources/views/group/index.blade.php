@@ -143,7 +143,7 @@
             this.groups = response.data.user.groups;
             this.groupsUser = response.data.user.groups_created;
             this.possibleGroups = response.data.possibleGroups;
-            console.log(this.groupsUser);
+            console.log(response.data.user);
           });
         },
         addGroup: function(){
@@ -181,7 +181,24 @@
           });
         },
         sendRequest: function(id){
-          console.log(id);
+          axios.post('http://localhost:8000/requestsuser',{
+            group_id: id
+          }).then(response => {
+            if (response.status == 200) {
+
+              console.log(response.data.created);
+              if (response.data.created) {
+                var $toastContent = $('<div class="card-panel green darken-1">Solicitud enviada correctamente</div>');
+                Materialize.toast($toastContent, 2000);
+              }else{
+                var $toastContent = $('<div class="card-panel red darken-1">Ya has enviado una solicitud antes</div>');
+                Materialize.toast($toastContent, 2000);
+              }
+            }
+          }).catch(error => {
+            var $toastContent = $('<div class="card-panel red darken-1">Ha surgido un error</div>');
+            Materialize.toast($toastContent, 2000);
+          });
         },
       },
 

@@ -13,6 +13,10 @@ class Group extends Model
     protected $dates = [
       'created_at',
     ];
+    public function requests()
+    {
+      return $this->hasMany('App\RequestUser');
+    }
     public function users()
     {
       return $this->belongsToMany('App\User');

@@ -26,6 +26,7 @@ class GroupsController extends Controller
       $current_user = Auth::user();
       $current_user->groups;
       $current_user->groupsCreated;
+      $current_user->groupsCreated->requests;
       $userGroups = $current_user->groups;
       $possibleGroups = Group::where([
         ['private','=',false],

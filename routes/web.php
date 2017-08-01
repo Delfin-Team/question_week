@@ -70,4 +70,5 @@ Route::middleware(['auth'])->group(function(){
   Route::resource('answers','AnswersController');
   Route::resource('groups','GroupsController');
   Route::resource('users','UsersController');
+  Route::resource('requestsuser','RequestUserController');
 });

@@ -14,4 +14,12 @@ class RequestUser extends Model
     protected $dates = [
       'created_at'
     ];
+    public function user()
+    {
+      return $this->belongsTo('App\User');
+    }
+    public function group()
+    {
+      return $this->belongsTo('App\Group');
+    }
 }

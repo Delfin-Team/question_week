@@ -26,7 +26,6 @@ class GroupsController extends Controller
       $current_user = Auth::user();
       $current_user->groups;
       $current_user->groupsCreated;
-      $current_user->groupsCreated->requests;
       $userGroups = $current_user->groups;
       $possibleGroups = Group::where([
         ['private','=',false],
@@ -39,7 +38,6 @@ class GroupsController extends Controller
     {
 
       $group = Group::find($idGroup);
-
       $belongsToGroup = DB::table('group_user')->where([
                                                   ['user_id','=', $idUser],
                                                   ['group_id','=', $idGroup],
@@ -118,9 +116,16 @@ class GroupsController extends Controller
     public function detailGroup($id)
     {
       $group = Group::find($id);
+      $requests = $group->requests->where('accepted',false);
+      foreach ($requests as $request) {
+        $request->user;
+      }
+
       $owner = User::find($group->user_id);
       $current_date = Carbon::now();
+      //get last day of week
       $sundayOfLastWeek = Carbon::now()->previous(Carbon::SUNDAY)->format('Y-m-d H:i:s');
+      //get the first day of the last week, in this case always will be monday
       if ($current_date->dayOfWeek == 1) {
           $mondayOfLastWeek = Carbon::now()->previous(Carbon::MONDAY)->format('Y-m-d H:i:s');
 
@@ -130,7 +135,7 @@ class GroupsController extends Controller
 
       $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d H:i:s');
       $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d H:i:s');
-
+      //get the question of week
       $theWinner = Question::where([
 
                                     ['created_at','>=',$mondayOfLastWeek],
@@ -138,11 +143,15 @@ class GroupsController extends Controller
                                     ['group_id','=',$id]
                                   ])
                             ->orderBy('votes','DESC')->first();
+      $theWinner->user;
+      $theWinner->answers;
       if ($theWinner->state == "propuesta") {
         $theWinner->state = "ganadora";
         $theWinner->save();
       }
+      //the user already answered the the  question of week?
       $theWinner->alreadyAnswered = $theWinner->AlreadyAnswered;
+      //get the questions of the current week
       $questions = Question::where([
 
                                     ['created_at','>=',$startOfWeek],
@@ -150,11 +159,11 @@ class GroupsController extends Controller
                                     ['group_id', '=', $id]
                                   ])
                             ->orderBy('votes','DESC')->get();
+      //retrieve votes of each question
       foreach ($questions as $question) {
         $question->alreadyVote = $question->AlreadyVote;
 
       }
-      return response()->json($theWinner);
       return response()->json(['group' => $group, 'questions' => $questions, 'questionWeek' => $theWinner, 'owner' => $owner],200);
     }
     public function show($id)
@@ -184,7 +193,7 @@ class GroupsController extends Controller
           $theWinner->state = "ganadora";
           $theWinner->save();
         }
-
+        $theWinner->answers;
         $questions = Question::where([
 
                                       ['created_at','>=',$startOfWeek],

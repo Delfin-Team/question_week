@@ -26,7 +26,7 @@ Route::middleware(['auth'])->group(function(){
       'uses'=> 'QuestionsController@addVote',
       'as' => 'addVote',
   ]);
-  Route::post('/addVote/{id}',[
+  Route::post('/addvote/{id}',[
       'uses'=> 'AnswersController@addVote',
       'as' => 'answer.addVote',
   ]);

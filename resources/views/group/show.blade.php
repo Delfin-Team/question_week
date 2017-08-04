@@ -1,9 +1,7 @@
 @extends('layouts.master')
-
 @section('content')
   <div class="row" id="main">
   <!--question week-->
-  
     <div class="container blue lighten-5 z-depth-3" >
   	  <h4 class="indigo center-align"><font color="white" id="titleQuestion" ><h3 class="text-center">@{{questionWeek.title}}</h3></font></h4>
       <div class="container border-radius: 10px" id="cardQuestion">
@@ -22,7 +20,7 @@
   		                    <hr>
   		                    <div class="input-field col s12">
   		                  <!-- Modal Trigger -->
-                        <template id="" v-if="!questionWeek.AlreadyAnswered">
+                        <template v-if="!questionWeek.alreadyAnswered">
                           <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Responder</a>
                         </template>
 
@@ -35,20 +33,26 @@
     									      <div id="modal1" class="modal">
                               <div class="modal-content">
                                 <h4>@{{questionWeek.title}}</h4>
-                                <form v-for="answer in questionWeek.answers">
-                                  <div class="input-field col s12">
-                                    <p>@{{answer.description}}</p>
-                                    <input type="hidden" name="answer" v-bind:value="answer.id">
-                                  </div>
-                                  <div class="row">
-                                    <button class="btn waves-effect waves-light" type="submit" name="action">
-                                        <i class="material-icons right">thumb_up</i>
-                                    </button>
-                                  </div>
-                                </form>
+                                <template v-if="!questionWeek.alreadyAnswered">
+                                  <form v-for="answer in questionWeek.answers" v-on:submit.prevent>
+                                    <div class="input-field col s12">
+                                      <p>@{{answer.description}}</p>
+                                      <input type="hidden" name="answer" v-bind:value="answer.id">
+                                    </div>
+                                    <div class="row">
+                                      <button class="btn waves-effect waves-light" name="action" v-on:click="addVoteToAnswer(questionWeek.id,answer.id)">
+                                          <i class="material-icons right">thumb_up</i>
+                                      </button>
+                                    </div>
+                                  </form>
+                                </template>
+                                <p v-else>
+                                  Pregunta respondida :)
+                                </p>
+
     									        </div>
         									    <div class="modal-footer">
-        									      <a href="#!" class="modal-action modal-close  waves-red btn-flat blue darken-3 white-text">Cancelar</a>
+        									      <a v-on:click.prevent class="modal-action modal-close  waves-red btn-flat blue darken-3 white-text">Cerrar</a>
         									    </div>
     									      </div>
   									      </div>
@@ -66,30 +70,32 @@
   		    </div>
   		</div>
       <h1>Preguntas propuestas</h1>
-      <div class="carousel">
-        <div class="row">
 
-            <div class="col s12 m6 l4 xl12" v-for="question in questions">
-              <div class="carousel-item">
-          	  <div class="card">
-                  <div class="card-image">
-                    <img src="https://lorempixel.com/250/250/nature/1">
-                    <span class="card-title">@{{question.title}}</span>
-                    <a class="btn-floating halfway-fab waves-effect waves-light red" v-on:click="addVoteToQuestion(question.id)" v-if="question.AlreadyVote">
-                      <i class="material-icons">thumb_up</i>
-                    </a>
+      <div class="row">
+        <div class="col s12 m6 xl4" v-for="(question,index) in sortQuestions">
+          <div class="card small">
+            <div class="card-image">
+              <img src="{{asset('images/questions.png')}}">
+              <span class="card-title black-text darken-2">Propuesta</span>
 
-                  </div>
-                  <div class="card-content">
-                    <p>Votos: @{{question.votes}}</p>
-                  </div>
-               </div>
-              </div>
             </div>
-
-
+            <div class="card-content">
+              <p>@{{question.title}}</p>
+              <p>
+                Votos: @{{question.votes}}
+              </p>
+              <p v-if="question.public">
+                Creador: @{{question.user.email}}
+              </p>
+              <p v-else>
+                Creador: Anomino
+              </p>
+              <a class="btn-floating halfway-fab waves-effect waves-light red" v-on:click="addVoteToQuestion(question.id, index)" v-if="!question.alreadyVote"><i class="material-icons">thumb_up</i></a>
+            </div>
+          </div>
         </div>
       </div>
+
       <!-- Modal Structure | add user-->
       <div id="modal2" class="modal">
         <div class="modal-content">
@@ -104,7 +110,7 @@
                           <label for="icon_prefix">Usuario</label>
                   </div>
                   <ul class="collection">
-                    <li v-for="item in searchUser" class="collection-item"><div> @{{item.name}} <a href="#!"  v-on:click="addUser(item.id)" class="secondary-content"><i class="material-icons">person_add</i></a></div></li>
+                    <li v-for="item in searchUser" class="collection-item"><div> @{{item.email}} <a href="#!"  v-on:click="addUser(item.id)" class="secondary-content"><i class="material-icons">person_add</i></a></div></li>
                   </ul>
 
                 </div>
@@ -112,7 +118,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
       </div>
       <!-- Modal Structure | delete user-->
@@ -126,11 +132,11 @@
 
                    <div class="input-field col s12">
                           <i class="material-icons prefix">account_circle</i>
-                          <input id="icon_prefix" type="text" class="validate" v-model="email">
+                          <input id="icon_prefix" type="text" class="validate" v-model="emailToDelete">
                           <label for="icon_prefix">Usuario</label>
                   </div>
                   <ul class="collection">
-                    <li v-for="(item, index) in searchUserForDelete" class="collection-item"><div> @{{item.name}} <a href="#!"  v-on:click="deleteUser(item.id, index)" class="secondary-content"><i class="material-icons">delete</i></a></div></li>
+                    <li v-for="(item, index) in searchUserForDelete" class="collection-item"><div> @{{item.email}} <a href="#!"  v-on:click="deleteUser(item.id, index)" class="secondary-content"><i class="material-icons">delete</i></a></div></li>
                   </ul>
 
                 </div>
@@ -138,59 +144,53 @@
             </div>
         </div>
         <div class="modal-footer">
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
       </div>
       <!-- Modal Structure | create a new question-->
       <div id="modal4" class="modal">
         <div class="modal-content">
           <div class="row">
-           <form class="col s12" action="{{route('questions.store')}}" method="POST">
-             {{ csrf_field() }}
+           <form v-on:submit.prevent>
              <div class="row">
-               <input type="hidden" name="group_id" value="group.id">
                 <div class="input-field col s12 ">
                  <i class="material-icons prefix">insert_emoticon</i>
-                 <input id="icon_prefix" type="text" class="validate" v-model="titleQuestion" name="title">
-                 <label for="icon_prefix">Titulo:</label>
-               </div>
-
+                 <input id="icon_prefix" type="text" class="validate" v-model="newQuestion.title">
+                 <label for="icon_prefix">Titulo: ¿@{{newQuestion.title}}?</label>
+                </div>
                <h3 class="text center">Posibles respuestas</h3>
                <div class="input-field col s12 xl4 m12">
                  <i class="material-icons prefix">local_activity</i>
-                 <input id="icon_prefix" type="text" class="validate" v-model="answer1" name="answer1">
+                 <input id="icon_prefix" type="text" class="validate" name="answer1" v-model="newQuestion.answer1">
                  <label for="icon_prefix">Respuesta 1</label>
                </div>
                <div class="input-field col s12 xl4 m12">
                  <i class="material-icons prefix">local_activity</i>
-                 <input id="icon_telephone" type="tel" class="validate" v-model="answer2" name="answer2">
+                 <input id="icon_telephone" type="tel" class="validate" name="answer2" v-model="newQuestion.answer2">
                  <label for="icon_telephone">Respuesta 2</label>
                </div>
                <div class="input-field col s12 xl4 m12">
                  <i class="material-icons prefix">local_activity</i>
-                 <input id="icon_telephone" type="tel" class="validate" v-model="answer3" name="answer3">
+                 <input id="icon_telephone" type="tel" class="validate" name="answer3" v-model="newQuestion.answer3">
                  <label for="icon_telephone">Respuesta 3</label>
                </div>
+               <p>
+                 <i class="material-icons prefix">lock</i>
+                <input type="checkbox" id="test9" v-model="publicQuestion" />
+                <label for="test9">Anonimo?</label>
+               </p>
              </div>
              <div class="center-align">
-               <button class="btn waves-effect waves-light" type="submit" v-on:click="addQuestion" v-if="titleQuestion" >Enviar
-                       <i class="material-icons right">send</i>
+               <button class="btn waves-effect waves-light" v-if="newQuestion.title.length > 2" v-on:click="addQuestion">
+                 Enviar
+                 <i class="material-icons right">send</i>
                 </button>
              </div>
-
-           <div class="center-align">
-             <button class="btn waves-effect waves-light" type="submit" v-on:click="addQuestion" >Enviar
-                     <i class="material-icons right">send</i>
-              </button>
-            </form>
-           </div>
+           </form>
          </div>
         </div>
         <div class="modal-footer">
-          <button class="btn waves-effect waves-light" type="submit" v-on:click="addQuestion" v-if="titleQuestion" >Enviar
-                  <i class="material-icons right">send</i>
-           </button>
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
       </div>
 
@@ -203,18 +203,18 @@
       <h4>Solicitudes</h4>
       <ul class="collection">
 
-        <li class="collection-item avatar" v-for="request in group.requests">
+        <li class="collection-item avatar" v-for="(request,index) in requests">
           <i class="material-icons circle green">portrait</i>
-          <span class="title"> @{{request.user.name}} - @{{request.user.email}} - @{{request.created_at}}</span>
+          <span class="title"> @{{request.user.name}} - @{{request.user.email}} </span>
           <p> <br>
-
+            @{{request.created_at}}
           </p>
-          <a href="#!" class="secondary-content"><i class="material-icons">check</i></a>
+          <a href="#!" class="secondary-content" v-on:click="addUserToGroup(request.id,index)"><i class="material-icons">check</i></a>
         </li>
       </ul>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+      <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
     </div>
   </div>
   </div>
@@ -241,23 +241,26 @@
   <script type="text/javascript" src="https://unpkg.com/vue@2.4.1"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
   <script type="text/javascript">
-    var aux = $("#group_id").val();
-
-    $(document).ready(function(){
-      $('.modal').modal();
-      $('.carousel').carousel();
-    })
-
     new Vue({
           el: "#main",
           data: {
             group:[],
             list: [],
+            selected : '',
+            publicQuestion: false,
+            newQuestion: {
+              title: '',
+              answer1: '',
+              answer2: '',
+              answer3: '',
+            },
             users : [],
             questions: [],
             questionWeek: [],
             email:'',
+            emailToDelete: '',
             group_id: '',
+            requests: [],
           },
           created: function(){
             var url = window.location.href ;
@@ -266,14 +269,16 @@
             this.getUsers();
             this.getUsersOfGroup();
             this.detailGroup();
+
           },
           methods:{
             detailGroup: function(){
               axios.get('http://localhost:8000/detailgroup/' + this.group_id)
               .then(response => {
                 this.group = response.data.group;
-                this.questionWeek = response.data.questionWeek;
                 this.questions = response.data.questions;
+                this.requests = response.data.requests;
+                this.questionWeek = response.data.questionWeek;
               });
             },
             getUsers: function(){
@@ -291,14 +296,28 @@
             },
             addUser: function(id){
               console.log("add user with id " + id +" and the id_group: " + this.group_id)
-              axios.post("http://localhost:8000/adduser/" + id + "/" + aux).then(response => {
+              axios.post("http://localhost:8000/adduser/" + id + "/" + this.group_id).then(response => {
                 console.log(response.data.response);
                 if (response.data.response) {
                   var $toastContent = $('<div class="card-panel green darken-1">Usuario agregado</div>');
                   Materialize.toast($toastContent, 2000);
-
+                  this.email = "";
                 }else{
                   var $toastContent = $('    <div class="card-panel deep-orange accent-4">Este usuario ya esta en el grupo</div>');
+                  Materialize.toast($toastContent, 2000);
+                }
+              });
+            },
+            addUserToGroup: function(id,index){
+              axios.put("http://localhost:8000/requestsuser/" + id, {
+              }).then(response => {
+
+                if (response.status==200) {
+                  var $toastContent = $('<div class="card-panel green darken-1">Solicitud aceptada y usuario agregado al grupo.</div>');
+                  Materialize.toast($toastContent, 3000);
+                  this.requests.pop(index);
+                }else{
+                  var $toastContent = $('    <div class="card-panel red accent-4">Ha surgido un error</div>');
                   Materialize.toast($toastContent, 2000);
                 }
               });
@@ -311,27 +330,65 @@
                   var $toastContent = $('<div class="card-panel green darken-1">Usuario eliminado</div>');
                   Materialize.toast($toastContent, 2000);
                   this.users.pop(index);
+                  this.emailToDelete = "";
 
                 }
               });
             },
-            addVoteToQuestion: function(id){
-              console.log("add vote to question: " + id);
+            addQuestion: function(){
+              console.log(this.newQuestion.title);
+              console.log(this.newQuestion.answer1);
+              console.log(this.newQuestion.answer2);
+              console.log(this.newQuestion.answer3);
+              axios.post('http://localhost:8000/questions',{
+                title: this.newQuestion.title,
+                answer1: this.newQuestion.answer1,
+                answer2: this.newQuestion.answer2,
+                answer3: this.newQuestion.answer3,
+                public: !this.publicQuestion,
+                group_id : this.group_id
+              }).then(response => {
+                if (response.status == 200) {
+                  this.questions.push(response.data.question);
+                  console.log(response.data.question);
+                  this.newQuestion.title = "";
+                  this.newQuestion.answer1 = "";
+                  this.newQuestion.answer2 = "";
+                  this.newQuestion.answer3 = "";
+                  var $toastContent = $('<div class="card-panel green darken-1">Pregunta agregada.</div>');
+                  Materialize.toast($toastContent, 2000);
+                }
+              });
+            },
+            addVoteToQuestion: function(id,index){
               axios.put("http://localhost:8000/addvote/" + id ).then(response => {
                 console.log(response.data.status);
-                /*
-                if (response.data.response) {
-                  var $toastContent = $('<div class="card-panel green darken-1">Usuario eliminado</div>');
+
+                if (response.status == 200) {
+                  var $toastContent = $('<div class="card-panel green darken-1">Voto agregado.</div>');
                   Materialize.toast($toastContent, 2000);
-                  this.users.pop(index);
+                  //this.questions[index].alreadyVote = true;
+                  this.questions[index].votes++;
+
+                  this.questions[index].alreadyVote = !this.questions[index].alreadyVote ;
 
                 }
-                */
+              });
+            },
+            addVoteToAnswer: function(question_id,answer_id){
+              axios.post("http://localhost:8000/addvote/" + question_id, {
+                answer: answer_id,
+              } ).then(response => {
+                console.log(response.data.status);
+                if (response.status == 200) {
+                  this.questionWeek.alreadyAnswered = !this.questionWeek.alreadyAnswered;
+                  var $toastContent = $('<div class="card-panel green darken-1">Pregunta responida.</div>');
+                  Materialize.toast($toastContent, 2000);
 
+                }
               });
             }
           },
-
           computed:{
             searchUser:function(){
               return this.list.filter((item)=>item.email.includes(this.email));
@@ -339,8 +396,22 @@
             searchUserForDelete:function(){
               return this.users.filter((item)=>item.email.includes(this.email));
             },
-          }
+            sortQuestions: function(){
+              function compare(a, b) {
+                if (a.votes > b.votes)
+                  return -1;
+                if (a.votes > b.votes)
+                  return 1;
+                return 0;
+              }
 
+              return this.questions.sort(compare);
+            }
+          }
         });
+        $(document).ready(function(){
+          $('.modal').modal();
+          $('.carousel').carousel();
+        })
   </script>
 @endsection

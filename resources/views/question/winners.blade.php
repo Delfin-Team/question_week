@@ -7,7 +7,7 @@
   	  @foreach ($questions as $question)
         <div class="card small">
     	    <div class="card-image waves-effect waves-block waves-light">
-    	      <img class="activator" src="https://lorempixel.com/250/250/nature/1">
+    	      <img class="activator" src="{{asset('/images/questions.png')}}">
     	    </div>
     	    <div class="card-content">
     	      <span class="card-title activator grey-text text-darken-4">{{$question->title}}<i class="material-icons right">keyboard_arrow_up</i></span>

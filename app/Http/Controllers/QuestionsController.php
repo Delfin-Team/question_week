@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Question;
 use App\Answer;
+use App\Group;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,7 +61,9 @@ class QuestionsController extends Controller
     }
     public function winners($id)
     {
-      $questions = Question::where('state' , 'ganadora')->get();
+      $group = Group::find($id);
+
+      $questions = $group->questions->where('state','ganadora');
       return view('question.winners', ['questions' => $questions]);
     }
     /**
@@ -77,6 +80,8 @@ class QuestionsController extends Controller
         $question->title = $request->title;
         $question->description = "pregunta de la semana";
         $question->state = 'propuesta';
+        $question->votes = 0;
+        $question->public = $request->public;
         $question->group_id = $request->group_id;
         $question->user_id = $current_user->id;
         $question->save();
@@ -96,7 +101,10 @@ class QuestionsController extends Controller
         $answer3->question_id = $question->id;
         $answer3->save();
         $question->answers;
-        return back();
+        $question->alreadyVote = false;
+        $question->user;
+
+        return response()->json(['question' => $question],200);
         //return redirect()->route('questions.index');
     }
     //find question, add vote to question and disable question to user()

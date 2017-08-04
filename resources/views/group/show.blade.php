@@ -2,11 +2,11 @@
 @section('content')
   <div class="row" id="main">
   <!--question week-->
-    <div class="container blue lighten-5 z-depth-3" >
-  	  <h4 class="indigo center-align"><font color="white" id="titleQuestion" ><h3 class="text-center">@{{questionWeek.title}}</h3></font></h4>
-      <div class="container border-radius: 10px" id="cardQuestion">
+    <div class="container blue lighten-5 z-depth-3" style="margin-top:50px;">
+  	  <h4 class="indigo center-align"><font color="white" id="titleQuestion" ><h5 class="text-center">@{{questionWeek.title}}</h5></font></h4>
+      <div class="container border-radius: 10px" style="padding:10px;">
   		    <div class="row">
-  		        <div class="col s9 offset s3">
+  		        <div class="col s12 m6 l6 xl8 offset m3 l3 xl2">
   		            <div class="row">
   		                <div class="row">
     		                <h5 id="qCreator" v-if="questionWeek.public"><i class="material-icons">face</i >  Creador:
@@ -20,13 +20,9 @@
   		                    <hr>
   		                    <div class="input-field col s12">
   		                  <!-- Modal Trigger -->
-                        <template v-if="!questionWeek.alreadyAnswered">
+                        <template v-if="questionWeek.alreadyAnswered">
                           <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Responder</a>
                         </template>
-
-
-
-
   		                  	  	<!--answers-->
   								 	      <div id="answersList">
   								 	      <!-- Modal Structure -->

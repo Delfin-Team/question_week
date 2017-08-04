@@ -60,7 +60,6 @@ class AnswersController extends Controller{
     public function addVote(Request $request, $id)
     {
       $question = Question::find($id);
-
       $current_user = Auth::user();
 
       //add register on intermediate table
@@ -69,11 +68,11 @@ class AnswersController extends Controller{
         'user_id' => $current_user->id,
         'question_id' => $id
       ]);
-      
+
       $answer = Answer::find($request->answer);
       $answer->votes += 1;
       $answer->save();
-      return redirect()->route('groups.index');
+
     }
     public function edit($id)
     {

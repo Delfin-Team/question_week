@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\RequestUser;
 use Auth;
+use App\Group;
 class RequestUserController extends Controller
 {
     /**
@@ -86,7 +87,18 @@ class RequestUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $requestt = RequestUser::find($id);
+
+        if ($requestt->accepted) {
+          return response()->json(['request' => $requestt],200);
+        }
+        $requestt->accepted = true;
+        $requestt->save();
+
+        $group = Group::find($requestt->group_id);
+        $group->users()->attach($requestt->user_id);
+
+        return response()->json(['request' => $requestt],200);
     }
 
     /**
@@ -97,6 +109,8 @@ class RequestUserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $req = RequestUser::find($id);
+        $req->delete();
+        return response()->json(['deleted' => true], 200);
     }
 }

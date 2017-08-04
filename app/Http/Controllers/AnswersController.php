@@ -72,7 +72,7 @@ class AnswersController extends Controller{
       $answer = Answer::find($request->answer);
       $answer->votes += 1;
       $answer->save();
-
+      return response()->json(['answer' => $answer],200);
     }
     public function edit($id)
     {

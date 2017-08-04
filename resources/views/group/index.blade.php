@@ -5,10 +5,23 @@
       <div class="row">
         <h1 class="center-align" >Welcome</h1>
         <h2>Mis grupos</h2>
+
         <div class="row">
-          <div class="col s6 offset-s3">
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s12">
+                <i class="material-icons prefix">search</i>
+                <textarea id="icon_prefix2" class="materialize-textarea" v-model="nameToSearch"></textarea>
+                <label for="icon_prefix2">Nombre del grupo</label>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
             <ul class="collection">
-              <li class="collection-item avatar" v-for="group in groups">
+              <li class="collection-item avatar" v-for="group in groupsResult">
                 <img src="../images/janeth.jpg" alt="" class="circle">
                 <span class="title"><a :href="'groups/' + group.id">@{{group.name}}</a></span>
                 <p> Cantidad de Mienbros: </p>
@@ -45,7 +58,7 @@
         </div>
         <div class="modal-footer">
           <button class="modal-action modal-close waves-effect waves-green btn-flat" v-on:click="addGroup" v-if="nameGroup.length > 2" > Agregar </button>
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
       </div>
       <div id="modal2" class="modal">
@@ -69,7 +82,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
       </div>
       <div id="modal3" class="modal">
@@ -94,7 +107,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
 
         </div>
       </div>
@@ -132,6 +145,7 @@
         selected: "",
         possibleGroups: [],
         nameGroup: "",
+        nameToSearch: "",
         typeGroup: "",
         nameToDelete: "",
         nameToJoin: "",
@@ -156,9 +170,12 @@
                 console.log(response.data.group);
                 this.groups.push(response.data.group);
                 this.groupsUser.push(response.data.group);
+                var $toastContent = $('<div class="card-panel green darken-1">Grupo creado correctamente.</div>');
+                Materialize.toast($toastContent, 2000);
+                this.nameGroup= "";
+                this.selected = "";
               }
-              this.nameGroup= "";
-              this.selected = "";
+
             }
           );
         },
@@ -208,6 +225,9 @@
           },
           searchGroupToJoin:function(){
             return this.possibleGroups.filter((group)=>group.name.includes(this.nameToJoin));
+          },
+          groupsResult:function(){
+            return this.groups.filter((group)=>group.name.includes(this.nameToSearch));
           }
     },
     });

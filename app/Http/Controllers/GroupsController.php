@@ -162,9 +162,9 @@ class GroupsController extends Controller
       //retrieve votes of each question
       foreach ($questions as $question) {
         $question->alreadyVote = $question->AlreadyVote;
-
+        $question->user;
       }
-      return response()->json(['group' => $group, 'questions' => $questions, 'questionWeek' => $theWinner, 'owner' => $owner],200);
+      return response()->json(['group' => $group, 'questions' => $questions, 'questionWeek' => $theWinner, 'owner' => $owner,'requests' => $requests],200);
     }
     public function show($id)
     {

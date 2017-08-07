@@ -3,8 +3,10 @@
 @section('content')
   <div class="container" id="main">
       <div class="row">
-        <h1 class="center-align" >Welcome</h1>
-        <h2>Mis grupos</h2>
+        <div class="center-align">
+          <h2>Mis grupos</h2>
+        </div>
+
 
         <div class="row">
           <form class="col s12">
@@ -12,7 +14,7 @@
               <div class="input-field col s12">
                 <i class="material-icons prefix">search</i>
                 <textarea id="icon_prefix2" class="materialize-textarea" v-model="nameToSearch"></textarea>
-                <label for="icon_prefix2">Nombre del grupo</label>
+                <label for="icon_prefix2">Buscar grupo</label>
               </div>
             </div>
           </form>
@@ -22,9 +24,14 @@
           <div class="col s12">
             <ul class="collection">
               <li class="collection-item avatar" v-for="group in groupsResult">
-                <img src="../images/janeth.jpg" alt="" class="circle">
+                <img src="{{asset('/images/groups.png')}}" alt="" class="circle">
                 <span class="title"><a :href="'groups/' + group.id">@{{group.name}}</a></span>
-                <p> Cantidad de Mienbros: </p>
+                <p v-if="group.private">
+                  Privado
+                </p>
+                <p v-else>
+                  Público
+                </p>
                 <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
               </li>
             </ul>
@@ -133,6 +140,7 @@
     $(document).ready(function()    {
         $('.modal').modal();
         $('select').material_select();
+
     });
     new Vue({
       el: "#main",

@@ -116,6 +116,7 @@ class GroupsController extends Controller
     public function detailGroup($id)
     {
       $group = Group::find($id);
+      
       $requests = $group->requests->where('accepted',false);
       foreach ($requests as $request) {
         $request->user;
@@ -143,14 +144,16 @@ class GroupsController extends Controller
                                     ['group_id','=',$id]
                                   ])
                             ->orderBy('votes','DESC')->first();
-      $theWinner->user;
-      $theWinner->answers;
-      if ($theWinner->state == "propuesta") {
-        $theWinner->state = "ganadora";
-        $theWinner->save();
+      if ($theWinner != null) {
+        $theWinner->user;
+        $theWinner->answers;
+        if ($theWinner->state == "propuesta") {
+          $theWinner->state = "ganadora";
+          $theWinner->save();
+        }
+        //the user already answered the the  question of week?
+        $theWinner->alreadyAnswered = $theWinner->AlreadyAnswered;
       }
-      //the user already answered the the  question of week?
-      $theWinner->alreadyAnswered = $theWinner->AlreadyAnswered;
       //get the questions of the current week
       $questions = Question::where([
 
@@ -170,38 +173,7 @@ class GroupsController extends Controller
     {
         $group = Group::find($id);
         $owner = User::find($group->user_id);
-        $current_date = Carbon::now();
-        $sundayOfLastWeek = Carbon::now()->previous(Carbon::SUNDAY)->format('Y-m-d H:i:s');
-        if ($current_date->dayOfWeek == 1) {
-            $mondayOfLastWeek = Carbon::now()->previous(Carbon::MONDAY)->format('Y-m-d H:i:s');
-
-        }else{
-          $mondayOfLastWeek = Carbon::now()->previous(Carbon::MONDAY)->previous(Carbon::MONDAY)->format('Y-m-d H:i:s');
-        }
-
-        $startOfWeek = Carbon::now()->startOfWeek()->format('Y-m-d H:i:s');
-        $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d H:i:s');
-
-        $theWinner = Question::where([
-
-                                      ['created_at','>=',$mondayOfLastWeek],
-                                      ['created_at','<=',$sundayOfLastWeek],
-                                      ['group_id','=',$id]
-                                    ])
-                              ->orderBy('votes','DESC')->first();
-        if ($theWinner->state == "propuesta") {
-          $theWinner->state = "ganadora";
-          $theWinner->save();
-        }
-        $theWinner->answers;
-        $questions = Question::where([
-
-                                      ['created_at','>=',$startOfWeek],
-                                      ['created_at','<=',$endOfWeek],
-                                      ['group_id', '=', $id]
-                                    ])
-                              ->orderBy('votes','DESC')->get();
-        return view('group.show',['group' => $group, 'questions' => $questions, 'questionWeek' => $theWinner, 'owner' => $owner]);
+        return view('group.show',['group' => $group,'owner' => $owner]);
     }
 
     /**

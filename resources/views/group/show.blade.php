@@ -3,69 +3,74 @@
   <div class="row" id="main">
   <!--question week-->
     <div class="container blue lighten-5 z-depth-3" style="margin-top:50px;">
-  	  <h4 class="indigo center-align"><font color="white" id="titleQuestion" ><h5 class="text-center">@{{questionWeek.title}}</h5></font></h4>
-      <div class="container border-radius: 10px" style="padding:10px;">
-  		    <div class="row">
-  		        <div class="col s12 m6 l6 xl8 offset m3 l3 xl2">
-  		            <div class="row">
-  		                <div class="row">
-    		                <h5 id="qCreator" v-if="questionWeek.public"><i class="material-icons">face</i >  Creador:
-                            @{{questionWeek.user.email}}
-                        </h5>
-    		                <h5 id="created"><i class="material-icons">schedule</i> Creado: @{{questionWeek.created_at}}</h5>
-    		                <h5 id="totalVotes"><i class="material-icons">star</i> Votos: @{{questionWeek.votes}}</h5>
-  		                </div>
+  	  <template v-if="questionWeek != null">
+        <h4 class="indigo center-align"><font color="white" id="titleQuestion" ><h5 class="text-center">@{{questionWeek.title}}</h5></font></h4>
+        <div class="container border-radius: 10px" style="padding:10px;">
+    		    <div class="row">
+    		        <div class="col s12 m6 l6 xl8 offset m3 l3 xl2">
+    		            <div class="row">
+    		                <div class="row">
+      		                <h5 id="qCreator" v-if="questionWeek.public"><i class="material-icons">face</i >  Creador:
+                              @{{questionWeek.user.email}}
+                          </h5>
+      		                <h5 id="created"><i class="material-icons">schedule</i> Creado: @{{questionWeek.created_at}}</h5>
+      		                <h5 id="totalVotes"><i class="material-icons">star</i> Votos: @{{questionWeek.votes}}</h5>
+    		                </div>
 
-  		                <div class="row">
-  		                    <hr>
-  		                    <div class="input-field col s12">
-  		                  <!-- Modal Trigger -->
-                        <template v-if="questionWeek.alreadyAnswered">
-                          <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Responder</a>
-                        </template>
-  		                  	  	<!--answers-->
-  								 	      <div id="answersList">
-  								 	      <!-- Modal Structure -->
-    									      <div id="modal1" class="modal">
-                              <div class="modal-content">
-                                <h4>@{{questionWeek.title}}</h4>
-                                <template v-if="!questionWeek.alreadyAnswered">
-                                  <form v-for="answer in questionWeek.answers" v-on:submit.prevent>
-                                    <div class="input-field col s12">
-                                      <p>@{{answer.description}}</p>
-                                      <input type="hidden" name="answer" v-bind:value="answer.id">
-                                    </div>
-                                    <div class="row">
-                                      <button class="btn waves-effect waves-light" name="action" v-on:click="addVoteToAnswer(questionWeek.id,answer.id)">
-                                          <i class="material-icons right">thumb_up</i>
-                                      </button>
-                                    </div>
-                                  </form>
-                                </template>
-                                <p v-else>
-                                  Pregunta respondida :)
-                                </p>
+    		                <div class="row">
+    		                    <hr>
+    		                    <div class="input-field col s12">
+    		                  <!-- Modal Trigger -->
+                          <template v-if="questionWeek.alreadyAnswered">
+                            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Responder</a>
+                          </template>
+    		                  	  	<!--answers-->
+    								 	      <div id="answersList">
+    								 	      <!-- Modal Structure -->
+      									      <div id="modal1" class="modal">
+                                <div class="modal-content">
+                                  <h4>@{{questionWeek.title}}</h4>
+                                  <template v-if="!questionWeek.alreadyAnswered">
+                                    <form v-for="answer in questionWeek.answers" v-on:submit.prevent>
+                                      <div class="input-field col s12">
+                                        <p>@{{answer.description}}</p>
+                                        <input type="hidden" name="answer" v-bind:value="answer.id">
+                                      </div>
+                                      <div class="row">
+                                        <button class="btn waves-effect waves-light" name="action" v-on:click="addVoteToAnswer(questionWeek.id,answer.id)">
+                                            <i class="material-icons right">thumb_up</i>
+                                        </button>
+                                      </div>
+                                    </form>
+                                  </template>
+                                  <p v-else>
+                                    Pregunta respondida :)
+                                  </p>
 
-    									        </div>
-        									    <div class="modal-footer">
-        									      <a v-on:click.prevent class="modal-action modal-close  waves-red btn-flat blue darken-3 white-text">Cerrar</a>
-        									    </div>
+      									        </div>
+          									    <div class="modal-footer">
+          									      <a v-on:click.prevent class="modal-action modal-close  waves-red btn-flat blue darken-3 white-text">Cerrar</a>
+          									    </div>
+      									      </div>
     									      </div>
-  									      </div>
-  							  	<!--end-->
-  		                  <br>
-  		                  <br>
-  		                  <h6><a href="{{route('showGraphsVotes',$questionWeek->id)}}"><i class="material-icons">show_chart</i> Ver votos</a></h6>
-  		                </div>
-  		              </div>
+    							  	<!--end-->
+    		                  <br>
+    		                  <br>
+    		                  <h6><a v-bind:href="'/graphicsquestion/' + questionWeek.id"><i class="material-icons">show_chart</i> Ver votos</a></h6>
+    		                </div>
+    		              </div>
 
 
-  		          </div>
-  		        </div>
-  		      </div>
-  		    </div>
+    		          </div>
+    		        </div>
+    		      </div>
+    		    </div>
+  	  </template>
+      <p v-else>
+        No se registraron preguntas la semana pasada :(
+      </p>
   		</div>
-      <h1>Preguntas propuestas</h1>
+      <h3>Preguntas propuestas esta semana</h3>
 
       <div class="row">
         <div class="col s12 m6 xl4" v-for="(question,index) in sortQuestions">
@@ -408,6 +413,8 @@
         $(document).ready(function(){
           $('.modal').modal();
           $('.carousel').carousel();
-        })
+          $(".button-collapse").sideNav();
+        });
+
   </script>
 @endsection

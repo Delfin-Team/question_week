@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Group;
+use Auth;
 class UsersController extends Controller
 {
     /**
@@ -40,7 +41,21 @@ class UsersController extends Controller
     {
         //
     }
+    public function detailUser()
+    {
+      $user = Auth::user();
+      $user->groups;
+      $questions = $user->questions->take(15);
+      foreach ($questions as $question) {
+        $question->answers;
+      }
+      return response()->json(['user' => $user, 'questions' => $questions],200);
+    }
+    public function profile()
+    {
 
+      return view('user.profile');
+    }
     /**
      * Display the specified resource.
      *

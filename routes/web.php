@@ -66,6 +66,13 @@ Route::middleware(['auth'])->group(function(){
     'uses' => 'GroupsController@deleteUser',
     'as' => 'deleteUserOfGroup',
   ]);
+  //show profile
+  Route::get('/profile',[
+    'uses' => 'UsersController@profile',
+  ]);
+  Route::get('/detailuser',[
+    'uses' => 'UsersController@detailUser',
+  ]);
   Route::resource('questions','QuestionsController');
   Route::resource('answers','AnswersController');
   Route::resource('groups','GroupsController');

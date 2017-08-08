@@ -34,9 +34,9 @@
     <h4 v-if="show">Mis grupos</h4>
     <transition name="fade">
 
-    <ul class="collection row" v-if="show">
+    <ul class="collection" v-if="show">
 
-          <li class="collection-item avatar col s12 m6 x6 xl6" v-for="group in user.groups" style="border: 1px solid gray;">
+          <li class="collection-item avatar" v-for="group in user.groups">
             <img src="{{asset('/images/groups.png')}}" alt="" class="circle">
             <span class="title">@{{group.name}}</span>
             <p v-if="group.private">
@@ -91,7 +91,7 @@
       <p>
         <template v-if="detailquestion.state == 'ganadora'">
           <ul>
-            <li v-for="answer in detailquestion.answers">@{{answer.description}} - votos: @{{detailquestion.votes}}</li>
+            <li v-for="answer in detailquestion.answers">@{{answer.description}} - votos: @{{answer.votes}}</li>
           </ul>
           <a v-bind:href="'/graphicsquestion/' + detailquestion.id">Ver Resultados</a>
         </template>
@@ -105,7 +105,7 @@
       </p>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat green white-text">Aceptar</a>
+      <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat green white-text">Aceptar</a>
     </div>
   </div>
 
@@ -121,7 +121,9 @@
     })
   </script>
   <script type="text/javascript">
-
+  Vue.filter('truncate', function (text, stop, clamp) {
+    return text.slice(0, stop) + (stop < text.length ? clamp || '...' : '')
+  })
   new Vue({
     el: '#userProfile',
     created: function(){

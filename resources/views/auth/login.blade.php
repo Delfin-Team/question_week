@@ -49,7 +49,11 @@
             </div>
           </div>
           <div class="center-align">
-            <input type="submit" name="" value="Entrar" class="btn waves-effect waves-light z-depth-5">
+            <button type="submit" name="button" class="btn btn-waves">
+              <i class="material-icons">send</i>
+              Entrar</button>
+              <hr>
+              <a href="{{route('password.request')}}">¿Olvidaste tu contraseña?</a>
           </div>
         </form>
       </div><!--end login-->
@@ -57,7 +61,7 @@
         <form class="form-horizontal" method="POST" action="{{ route('register') }}">
             {{ csrf_field() }}
             <div class="input-field col s12">
-              <input placeholder="nombre" id="name" name="name" type="text" class="validate" value="{{ old('name') }}" required autofocus>
+              <input id="name" name="name" type="text" class="validate" value="{{ old('name') }}" required autofocus>
               <label for="name">
                 <i class="material-icons">face</i>
                 Nombre
@@ -69,7 +73,7 @@
               @endif
             </div>
             <div class="input-field col s12">
-              <input placeholder="email" id="email" name="email" type="email" class="validate" value="{{ old('email') }}" required>
+              <input id="email" name="email" type="email" class="validate" value="{{ old('email') }}" required>
               <label for="email">
                 <i class="material-icons">email</i>
                 Email
@@ -81,7 +85,7 @@
               @endif
             </div>
             <div class="input-field col s12">
-              <input placeholder="Contraseña" id="password" name="password" type="password" class="validate" value="{{ old('password') }}" required>
+              <input id="password" name="password" type="password" class="validate" value="{{ old('password') }}" required>
               <label for="password">
                 <i class="material-icons">vpn_key</i>
                 Contraseña
@@ -93,14 +97,16 @@
               @endif
             </div>
             <div class="input-field col s12">
-              <input placeholder="" id="password-confirm" name="password_confirmation" type="password" class="validate" required>
+              <input id="password-confirm" name="password_confirmation" type="password" class="validate" required>
               <label for="first_name">
                 <i class="material-icons">vpn_key</i>
                 Confirma tu contraseña
               </label>
             </div>
             <div class="center-align">
-              <button type="submit" class="btn btn-waves">Registrarse</button>
+              <button type="submit" class="btn btn-waves">
+                <i class="material-icons">add</i>
+                Registrarse</button>
             </div>
 
         </form>

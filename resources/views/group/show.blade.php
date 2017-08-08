@@ -10,18 +10,25 @@
     		        <div class="col s12 m6 l6 xl8 offset m3 l3 xl2">
     		            <div class="row">
     		                <div class="row">
-      		                <h5 id="qCreator" v-if="questionWeek.public"><i class="material-icons">face</i >  Creador:
+      		                <h6 id="qCreator" v-if="questionWeek.public"><i class="material-icons">face</i >  Creador:
                               @{{questionWeek.user.email}}
-                          </h5>
-      		                <h5 id="created"><i class="material-icons">schedule</i> Creado: @{{questionWeek.created_at}}</h5>
-      		                <h5 id="totalVotes"><i class="material-icons">star</i> Votos: @{{questionWeek.votes}}</h5>
+                          </h6>
+
+                          <span class="">
+                            <i class="material-icons">schedule</i> Creado: @{{questionWeek.created_at}}
+                          </span> <br>
+                          <span class="">
+                            <i class="material-icons">thumb_up</i> Votos totales con los que ganó: @{{questionWeek.votes}}
+                          </span>
+
+
     		                </div>
 
     		                <div class="row">
     		                    <hr>
     		                    <div class="input-field col s12">
     		                  <!-- Modal Trigger -->
-                          <template v-if="questionWeek.alreadyAnswered">
+                          <template v-if="!questionWeek.alreadyAnswered">
                             <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Responder</a>
                           </template>
     		                  	  	<!--answers-->
@@ -49,7 +56,7 @@
 
       									        </div>
           									    <div class="modal-footer">
-          									      <a v-on:click.prevent class="modal-action modal-close  waves-red btn-flat blue darken-3 white-text">Cerrar</a>
+          									      <a v-on:click.prevent class="modal-action modal-close  waves-red btn-flat red white-text">Cerrar</a>
           									    </div>
       									      </div>
     									      </div>
@@ -119,7 +126,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect red white-text btn-flat">Cancelar</a>
         </div>
       </div>
       <!-- Modal Structure | delete user-->
@@ -145,7 +152,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect red white-text btn-flat">Cancelar</a>
         </div>
       </div>
       <!-- Modal Structure | create a new question-->
@@ -191,7 +198,7 @@
          </div>
         </div>
         <div class="modal-footer">
-          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect red white-text btn-flat">Cancelar</a>
         </div>
       </div>
 
@@ -215,7 +222,7 @@
       </ul>
     </div>
     <div class="modal-footer">
-      <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+      <a v-on:click.prevent class="modal-action modal-close waves-effect red white-text waves-green btn-flat">Cerrar</a>
     </div>
   </div>
   </div>

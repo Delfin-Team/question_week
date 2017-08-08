@@ -16,6 +16,11 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::middleware(['guest'])->group(function(){
+  Route::get('/', function () {
+      return view('auth.login');
+  });
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
 

@@ -64,8 +64,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="modal-action modal-close waves-effect waves-green btn-flat" v-on:click="addGroup" v-if="nameGroup.length > 2" > Agregar </button>
-          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <button class="modal-action modal-close waves-effect btn-flat green white-text" v-on:click="addGroup" v-if="nameGroup.length > 2" > Agregar </button>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect btn-flat red white-text">Cancelar</a>
         </div>
       </div>
       <div id="modal2" class="modal">
@@ -89,7 +89,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect btn-flat red white-text">Cancelar</a>
         </div>
       </div>
       <div id="modal3" class="modal">
@@ -114,7 +114,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <a v-on:click.prevent class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a v-on:click.prevent class="modal-action modal-close waves-effect btn-flat red white-text">Cancelar</a>
 
         </div>
       </div>

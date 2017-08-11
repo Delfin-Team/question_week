@@ -53,6 +53,7 @@
               <i class="material-icons">send</i>
               Entrar</button>
               <hr>
+              <a href="{{url('/redirect')}}">Entrar con Facebook</a>
               <a href="{{route('password.request')}}">¿Olvidaste tu contraseña?</a>
           </div>
         </form>

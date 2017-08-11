@@ -14,7 +14,8 @@
 Route::get('/', function () {
     return view('auth.login');
 });
-
+Route::get('/redirect', 'SocialAuthFacebookController@redirect');
+Route::get('/callback', 'SocialAuthFacebookController@callback');
 Auth::routes();
 Route::middleware(['guest'])->group(function(){
   Route::get('/', function () {

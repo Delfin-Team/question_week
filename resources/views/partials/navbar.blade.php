@@ -12,6 +12,9 @@
           <li><a class="dropdown-button" href="#!" data-activates="dropdown1">{{Auth::user()->email}}<i class="material-icons right">arrow_drop_down</i></a></li>
           <li>
             <ul id="dropdown1" class="dropdown-content">
+              <li><a href="{{route('groups.index')}}">
+                <i class="material-icons">groups</i>
+                Grupos</a></li>
               <li><a href="{{url('/profile')}}">
                 <i class="material-icons">account_box</i>
                 Mi perfil</a></li>

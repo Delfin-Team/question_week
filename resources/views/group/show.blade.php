@@ -93,7 +93,7 @@
                 Votos: @{{question.votes}}
               </p>
               <p v-if="question.public">
-                Creador: @{{question.user.email}}
+                Creador: @{{question.user.name}}
               </p>
               <p v-else>
                 Creador: Anomino

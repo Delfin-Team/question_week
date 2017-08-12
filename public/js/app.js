@@ -1,4 +1,5 @@
 //main groups
+var apiurl = "http://192.168.0.22"
 new Vue({
   el: "#mainGroup",
   created: function(){
@@ -17,7 +18,7 @@ new Vue({
   },
   methods:{
     getGroups: function(){
-      var apiURl = "http://localhost/getgroups";
+      var apiURl = apiurl + "/getgroups";
       axios.get(apiURl).then(response => {
         this.groups = response.data.user.groups;
         this.groupsUser = response.data.user.groups_created;
@@ -26,7 +27,7 @@ new Vue({
       });
     },
     addGroup: function(){
-      axios.post("http://localhost/groups", {
+      axios.post(apiurl + "/groups", {
         name: this.nameGroup,
         private: this.selected,
       }).then(response => {
@@ -47,7 +48,7 @@ new Vue({
     deleteGroup: function(id, index){
       console.log('delete with position: ' + index + ' and id: '+ id);
 
-      axios.delete("http://localhost/groups/" + id).then(response => {
+      axios.delete(apiurl + "/groups/" + id).then(response => {
           if (response.status == 200) {
             this.groups.pop(index);
             var $toastContent = $('<div class="card-panel green darken-1">Grupo eliminado</div>');
@@ -63,7 +64,7 @@ new Vue({
       });
     },
     sendRequest: function(id){
-      axios.post('http://localhost/requestsuser',{
+      axios.post(apiurl + '/requestsuser',{
         group_id: id
       }).then(response => {
         if (response.status == 200) {
@@ -129,7 +130,7 @@ new Vue({
       },
       methods:{
         detailGroup: function(){
-          axios.get('http://localhost/detailgroup/' + this.group_id)
+          axios.get(apiurl + '/detailgroup/' + this.group_id)
           .then(response => {
             this.group = response.data.group;
             this.questions = response.data.questions;
@@ -138,13 +139,13 @@ new Vue({
           });
         },
         getUsers: function(){
-          var urlUsers="http://localhost/users";
+          var urlUsers=apiurl + "/users";
           axios.get(urlUsers).then(response => {
             this.list= response.data.users;
           });
         },
         getUsersOfGroup: function(){
-          var urlUsers="http://localhost/users/" + this.group_id;
+          var urlUsers=apiurl + "/users/" + this.group_id;
           axios.get(urlUsers).then(response => {
             this.users = response.data.users;
             console.log(this.users);
@@ -152,7 +153,7 @@ new Vue({
         },
         addUser: function(id){
           console.log("add user with id " + id +" and the id_group: " + this.group_id)
-          axios.post("http://localhost/adduser/" + id + "/" + this.group_id).then(response => {
+          axios.post(apiurl + "/adduser/" + id + "/" + this.group_id).then(response => {
             console.log(response.data.response);
             if (response.data.response) {
               var $toastContent = $('<div class="card-panel green darken-1">Usuario agregado</div>');
@@ -165,7 +166,7 @@ new Vue({
           });
         },
         addUserToGroup: function(id,index){
-          axios.put("http://localhost/requestsuser/" + id, {
+          axios.put(apiurl + "/requestsuser/" + id, {
           }).then(response => {
 
             if (response.status==200) {
@@ -180,7 +181,7 @@ new Vue({
         },
         deleteUser: function(id,index){
           console.log("delete user with id " + id +" and the id_group: " + this.group_id)
-          axios.post("http://localhost/deleteuser/" + id + "/" + this.group_id).then(response => {
+          axios.post(apiurl + "/deleteuser/" + id + "/" + this.group_id).then(response => {
             console.log(response.data.response);
             if (response.data.response) {
               var $toastContent = $('<div class="card-panel green darken-1">Usuario eliminado</div>');
@@ -196,7 +197,7 @@ new Vue({
           console.log(this.newQuestion.answer1);
           console.log(this.newQuestion.answer2);
           console.log(this.newQuestion.answer3);
-          axios.post('http://localhost/questions',{
+          axios.post(apiurl + '/questions',{
             title: this.newQuestion.title,
             answer1: this.newQuestion.answer1,
             answer2: this.newQuestion.answer2,
@@ -217,7 +218,7 @@ new Vue({
           });
         },
         addVoteToQuestion: function(id,index){
-          axios.put("http://localhost/addvote/" + id ).then(response => {
+          axios.put(apiurl + "/addvote/" + id ).then(response => {
             console.log(response.data.status);
 
             if (response.status == 200) {
@@ -232,7 +233,7 @@ new Vue({
           });
         },
         addVoteToAnswer: function(question_id,answer_id){
-          axios.post("http://localhost/addvote/" + question_id, {
+          axios.post(apiurl + "/addvote/" + question_id, {
             answer: answer_id,
           } ).then(response => {
             console.log(response.data.status);
@@ -279,7 +280,7 @@ new Vue({
   },
   methods:{
     getCurrentUser: function(){
-      axios.get('http://localhost/detailuser').then(response => {
+      axios.get(apiurl + '/detailuser').then(response => {
         console.log(response.data.user);
         this.user = response.data.user;
         this.questions = response.data.questions;

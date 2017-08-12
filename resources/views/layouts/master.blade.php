@@ -33,6 +33,9 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <!-- Latest compiled and minified JavaScript -->
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+      <script type="text/javascript" src="https://unpkg.com/vue@2.4.1"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+      <script src="{{ asset('js/app.js') }}"></script>
       @yield('extra-js')
       <script type="text/javascript">
         $(document).ready(function(){

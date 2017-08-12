@@ -113,46 +113,9 @@
 
 @endsection
 @section('extra-js')
-  <script type="text/javascript" src="https://unpkg.com/vue@2.4.1"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function(){
         $('.modal').modal();
     })
-  </script>
-  <script type="text/javascript">
-  Vue.filter('truncate', function (text, stop, clamp) {
-    return text.slice(0, stop) + (stop < text.length ? clamp || '...' : '')
-  })
-  new Vue({
-    el: '#userProfile',
-    created: function(){
-      this.getCurrentUser();
-    },
-    data: {
-      user: [],
-      show: true,
-      questions:[],
-      detailquestion: []
-    },
-    methods:{
-      getCurrentUser: function(){
-        axios.get('http://localhost:8000/detailuser').then(response => {
-          console.log(response.data.user);
-          this.user = response.data.user;
-          this.questions = response.data.questions;
-        });
-      },
-      showDetail: function(index){
-        console.log(this.user.questions[index]);
-        this.detailquestion= this.questions[index];
-      },
-    },
-    filters: {
-  	truncate: function(string, value) {
-    	return string.substring(0, value) + '...';
-    }
-  }
-  });
   </script>
 @endsection

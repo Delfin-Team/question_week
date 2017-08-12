@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-  <div class="container" id="main">
+  <div class="container" id="mainGroup">
       <div class="row">
         <div class="center-align">
           <h2>Mis grupos</h2>
@@ -133,112 +133,13 @@
        </ul>
      </div>
 @section('extra-js')
-  <!-- vue -->
-   <script type="text/javascript" src="https://unpkg.com/vue@2.4.1"></script>
-   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
    <script>
     $(document).ready(function()    {
         $('.modal').modal();
         $('select').material_select();
 
     });
-    new Vue({
-      el: "#main",
-      created: function(){
-        this.getGroups();
-      },
-      data: {
-        groups: [],
-        groupsUser:[],
-        selected: "",
-        possibleGroups: [],
-        nameGroup: "",
-        nameToSearch: "",
-        typeGroup: "",
-        nameToDelete: "",
-        nameToJoin: "",
-      },
-      methods:{
-        getGroups: function(){
-          var apiURl = "http://localhost:8000/getgroups";
-          axios.get(apiURl).then(response => {
-            this.groups = response.data.user.groups;
-            this.groupsUser = response.data.user.groups_created;
-            this.possibleGroups = response.data.possibleGroups;
-            console.log(response.data.user);
-          });
-        },
-        addGroup: function(){
-          axios.post("http://localhost:8000/groups", {
-            name: this.nameGroup,
-            private: this.selected,
-          }).then(response => {
-              console.log(response);
-              if (response.status == 200) {
-                console.log(response.data.group);
-                this.groups.push(response.data.group);
-                this.groupsUser.push(response.data.group);
-                var $toastContent = $('<div class="card-panel green darken-1">Grupo creado correctamente.</div>');
-                Materialize.toast($toastContent, 2000);
-                this.nameGroup= "";
-                this.selected = "";
-              }
 
-            }
-          );
-        },
-        deleteGroup: function(id, index){
-          console.log('delete with position: ' + index + ' and id: '+ id);
-
-          axios.delete("http://localhost:8000/groups/" + id).then(response => {
-              if (response.status == 200) {
-                this.groups.pop(index);
-                var $toastContent = $('<div class="card-panel green darken-1">Grupo eliminado</div>');
-                Materialize.toast($toastContent, 2000);
-                this.nameToDelete = "";
-              }
-
-            }
-          ).catch(error => {
-            var $toastContent = $('<div class="card-panel red darken-1">Ha surgido un error</div>');
-            Materialize.toast($toastContent, 2000);
-            this.nameToDelete = "";
-          });
-        },
-        sendRequest: function(id){
-          axios.post('http://localhost:8000/requestsuser',{
-            group_id: id
-          }).then(response => {
-            if (response.status == 200) {
-
-              console.log(response.data.created);
-              if (response.data.created) {
-                var $toastContent = $('<div class="card-panel green darken-1">Solicitud enviada correctamente</div>');
-                Materialize.toast($toastContent, 2000);
-              }else{
-                var $toastContent = $('<div class="card-panel red darken-1">Ya has enviado una solicitud antes</div>');
-                Materialize.toast($toastContent, 2000);
-              }
-            }
-          }).catch(error => {
-            var $toastContent = $('<div class="card-panel red darken-1">Ha surgido un error</div>');
-            Materialize.toast($toastContent, 2000);
-          });
-        },
-      },
-
-      computed:{
-          searchGroupToDelete:function(){
-            return this.groupsUser.filter((group)=>group.name.includes(this.nameToDelete));
-          },
-          searchGroupToJoin:function(){
-            return this.possibleGroups.filter((group)=>group.name.includes(this.nameToJoin));
-          },
-          groupsResult:function(){
-            return this.groups.filter((group)=>group.name.includes(this.nameToSearch));
-          }
-    },
-    });
     </script>
 @endsection
 @endsection
